@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">快捷应用列表</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    
+    <string name="one">1</string>
+    
+    <string name="list_title_star">收藏(%s)</string>
+    <string name="list_title_result">结果(%s)</string>
+    <string name="no_star">没有收藏夹</string>
+    <string name="no_result">无匹配</string>
+
+    <!-- settings -->
+    <string name="has_key_tone">开启按键音</string>
+    <string name="open_up">OPEN</string>
+</resources>
