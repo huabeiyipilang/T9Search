@@ -21,6 +21,8 @@
     <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.RESTART_PACKAGES"/> 
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
@@ -39,7 +41,7 @@
         <!-- 您从百度网站获取的APP KEY -->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
-            android:value="6Lxk8AS6UbEbpmMn5lOwfEZq" />
+            android:value="ee7d861282" />
 
         <!-- 是否开启错误日志统计，默认为false -->
         <meta-data
@@ -56,7 +58,9 @@
             android:name="BaiduMobAd_ONLY_WIFI"
             android:value="true" />
         <!-- 是否获取基站位置信息，默认为获取基站位置 -->
-        <meta-data android:name="BaiduMobAd_CELL_LOCATION" android:value="true" />
+        <meta-data
+            android:name="BaiduMobAd_CELL_LOCATION"
+            android:value="true" />
 
         <activity
             android:name="cn.kli.t9search.MainActivity"
@@ -73,6 +77,9 @@
         <receiver android:name="CachePersistReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
             </intent-filter>
         </receiver>
 

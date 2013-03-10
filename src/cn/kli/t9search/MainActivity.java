@@ -1,6 +1,7 @@
 package cn.kli.t9search;
 
 import com.baidu.mobstat.StatService;
+import com.google.analytics.tracking.android.EasyTracker;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity implements TextWatcher, IViewsContain
 		super.onCreate(savedInstanceState);
 		startService(new Intent(this, CacheService.class));
 		setContentView(R.layout.activity_main);
+		EasyTracker.getInstance().setContext(this);
 		//views
 		mListContainer = (ViewGroup)findViewById(R.id.list_container);
 		input = (DigitsEditText)findViewById(R.id.input);
@@ -43,6 +45,14 @@ public class MainActivity extends Activity implements TextWatcher, IViewsContain
 	
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+		EasyTracker.getInstance().activityStart(this); 
+	}
+
+
+
+	@Override
 	protected void onResume() {
 		super.onResume();
 		StatService.onResume(this);
@@ -57,6 +67,7 @@ public class MainActivity extends Activity implements TextWatcher, IViewsContain
 		StatService.onPause(this);
 	}
 
+	
 
 /*
 	@Override
@@ -84,6 +95,14 @@ public class MainActivity extends Activity implements TextWatcher, IViewsContain
 		return super.onMenuItemSelected(featureId, item);
 	}
 */
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		EasyTracker.getInstance().activityStop(this); 
+	}
+
+
 
 	@Override
 	public void afterTextChanged(Editable arg0) {

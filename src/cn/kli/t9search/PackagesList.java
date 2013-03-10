@@ -193,7 +193,11 @@ public class PackagesList extends LinearLayout implements OnItemClickListener, I
 		Intent intent = new Intent();
 		intent.setComponent(cn);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		mContext.startActivity(intent);
+		try {
+			mContext.startActivity(intent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
