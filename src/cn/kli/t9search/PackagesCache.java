@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
 
 public class PackagesCache extends Cache{
 	
@@ -52,4 +55,23 @@ public class PackagesCache extends Cache{
 		}
 	}
 
+	private class AppsHelper extends SQLiteOpenHelper{
+		private static final String DB_NAME = "app_info";
+		private static final int DB_VERSION = 1;
+
+		public AppsHelper(Context context) {
+			super(context, DB_NAME, null, DB_VERSION);
+		}
+
+		@Override
+		public void onCreate(SQLiteDatabase arg0) {
+			
+		}
+
+		@Override
+		public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+			
+		}
+		
+	}
 }
