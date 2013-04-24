@@ -1,9 +1,14 @@
 package cn.kli.t9search;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 
 public class DbHelper extends SQLiteOpenHelper {
 	private final static String DB_NAME = "database.db";
@@ -16,7 +21,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	private final static String APPS_PACKAGE = "package";
 	private final static String APPS_COUNT = "count";
 
-	private DbHelper(Context context) {
+	public DbHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
 	}
 
@@ -36,4 +41,35 @@ public class DbHelper extends SQLiteOpenHelper {
 
 	}
 
+	public void addAppItems(List<AppItem> items){
+		SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+		for(AppItem item : items){
+			ContentValues cv = new ContentValues();
+			cv.put(APPS_NAME, item.name);
+			if(item.icon != null){
+				cv.put(APPS_ICON, flattenBitmap(item.icon));
+			}
+			cv.put(APPS_INTENT, item.intent.toUri(0));
+			cv.put(APPS_PACKAGE, item.pkg);
+			cv.put(APPS_COUNT, 0);
+			db.insert(TABLE_APPS, null, cv);
+		}
+		db.endTransaction();
+	}
+	
+	
+	private static byte[] flattenBitmap(Bitmap bitmap){
+		int size = bitmap.getWidth() * bitmap.getHeight() * 4;
+		ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+		try {
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			out.flush();
+			out.close();
+			return out.toByteArray();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

@@ -8,7 +8,8 @@ public class DataListFactory {
 		IDataList list = null;
 		switch(mode){
 		case APP_MODE:
-			list = new PackagesList(context);
+			list = new AppsListView(context);
+//			list = new PackagesList(context);
 			break;
 		case CONTACTS_MODE:
 			list = new ContactsList(context);
