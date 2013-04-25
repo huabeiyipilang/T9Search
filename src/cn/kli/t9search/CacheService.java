@@ -12,9 +12,8 @@ public class CacheService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		mAppCache = PackagesCache.getInstance(getApplicationContext());
-		mAppCache.buildCache();
-		mSettingsHelper = SettingsHelper.init(getApplicationContext());
+//		mAppCache = PackagesCache.getInstance(getApplicationContext());
+//		mAppCache.buildCache();
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import cn.kli.t9search.AppsManager.State;
 import cn.kli.t9search.PackagesCache.PackageItem;
 
 public class AppsListView extends LinearLayout implements OnItemClickListener, IDataList {
@@ -33,7 +34,8 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 	private Context mContext;
 	private AbsListView mListView;
 	private ViewGroup mContainer;
-	private Cache mCache;
+	private AppsManager mAppsManager;
+	private PackagesAdapter mAdapter;
 	private OnItemSelectListener mListener = new OnItemSelectListener(){
 
 		@Override
@@ -43,27 +45,37 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 		
 	};
 	
-	private Cache.CacheCallBack mCallBack = new Cache.CacheCallBack() {
+	private AppsManager.StateChangeListener mDataChangeListener = new AppsManager.StateChangeListener(){
 
 		@Override
-		public void buildFinished(List items) {
-			Log.i("klilog", "cache build finished. items counts = "+items.size());
-			mContainer.removeAllViews();
-			mContainer.addView(mListView);
-			updateList(items);
+		public void onStateChanged(State state) {
+			klilog.i("State changed:"+state);
+			switch(state){
+			case IDLE:
+				mContainer.removeAllViews();
+				mContainer.addView(mListView);
+				updateQueryString(null);
+				break;
+			case BUILDING:
+			case QUERYING:
+				break;
+			}
 		}
 
 		@Override
-		public void buildProgress(String progress) {
+		public void onProgressUpdate(int progress) {
+			klilog.i("Progress changed:"+progress);
 			Message msg = mHandler.obtainMessage(MSG_UPDATE_BUILD_PROGRESS);
 			msg.obj = progress;
 			msg.sendToTarget();
 		}
 
 		@Override
-		public void searchCompleted(List items) {
-			updateList(items);
+		public void onQueryCompleted(List<AppItem> list) {
+			updateList(list);
 		}
+		
+		
 	};
 	
 	private Handler mHandler = new Handler(){
@@ -73,8 +85,9 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 			super.handleMessage(msg);
 			switch(msg.what){
 			case MSG_UPDATE_ADAPTER:
-				List<PackageItem> items = (List<PackageItem>)msg.obj;
-				((GridView)mListView).setAdapter(new PackagesAdapter(mContext, items));
+				List<AppItem> items = (List<AppItem>)msg.obj;
+				mAdapter = new PackagesAdapter(mContext, items);
+				((GridView)mListView).setAdapter(mAdapter);
 				break;
 			case MSG_UPDATE_BUILD_PROGRESS:
 			}
@@ -98,8 +111,9 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 		LayoutInflater inflater = LayoutInflater.from(context);
 		mContainer = (ViewGroup)inflater.inflate(R.layout.package_list, this,true);
 
-		mCache = PackagesCache.getInstance(context);
-		mCache.addCallBack(mCallBack);
+
+		mAppsManager = AppsManager.getInstance(mContext);
+		mAppsManager.listen(mDataChangeListener);
 		
 		mListView = new GridView(mContext);
 		mListView.setOnScrollListener(new OnScrollListener(){
@@ -121,19 +135,19 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 		mListView.setOnItemClickListener(this);
 		mListView.setSelector(R.drawable.app_icon_bg);
 
-		if(mCache.isBuilt()){
+		if(mAppsManager.hasBuilt()){
 			mContainer.removeAllViews();
 			mContainer.addView(mListView);
 			updateQueryString("");
 		}else{
-			mCache.buildCache();
+			mAppsManager.build();
 		}
 	}
 	
-	private class PackagesAdapter extends ArrayAdapter<PackagesCache.PackageItem>{
+	private class PackagesAdapter extends ArrayAdapter<AppItem>{
 		private LayoutInflater inflater;
-		private List<PackageItem> items;
-		public PackagesAdapter(Context context, List<PackageItem> items) {
+		private List<AppItem> items;
+		public PackagesAdapter(Context context, List<AppItem> items) {
 			super(context, 0, items);
 			inflater = LayoutInflater.from(context);
 			this.items = items;
@@ -152,9 +166,9 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 			}else{
 				holder = (ViewHolder)convertView.getTag();
 			}
-			PackageItem item = items.get(position);
-			holder.p_icon.setImageDrawable(item.info.loadIcon(mContext.getPackageManager()));
-			holder.p_name.setText(item.pName);
+			AppItem item = items.get(position);
+			holder.p_icon.setImageBitmap(item.icon);
+			holder.p_name.setText(item.name);
 			holder.p_key.setText(item.key);
 			return convertView;
 		}
@@ -167,7 +181,7 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 		
 	}
 	
-	private void updateList(List<PackageItem> items){
+	private void updateList(List<AppItem> items){
 		Message msg = new Message();
 		msg.what = MSG_UPDATE_ADAPTER;
 		msg.obj = items;
@@ -177,21 +191,18 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		PackageItem currentItem = (PackageItem)mCache.getCurrentSelectedItem(position);
-		launchApp(currentItem.info);
+		if(mAdapter != null){
+			AppItem item = mAdapter.items.get(position);
+			mAppsManager.onAppOpen(item);
+			launchApp(item.intent);
+		}
 		mListener.onItemSelect(null);
 	}
 	
-	private void launchApp(ResolveInfo reInfo){
-		if(reInfo == null){
+	private void launchApp(Intent intent){
+		if(intent == null){
 			return;
 		}
-		Mediator.getInstance().keyboardClear();
-		String packageName = reInfo.activityInfo.packageName;
-		String name = reInfo.activityInfo.name;
-		ComponentName cn = new ComponentName(packageName,name);
-		Intent intent = new Intent();
-		intent.setComponent(cn);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		try {
 			mContext.startActivity(intent);
@@ -207,16 +218,17 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 
 	@Override
 	public void updateQueryString(String query) {
-		mCache.Search(query);
+		mAppsManager.query(query);
 	}
 
 	@Override
 	public void selectTheFirst() {
-		PackageItem currentItem = (PackageItem)mCache.getCurrentSelectedItem(0);
-		if(currentItem == null){
-			return;
+
+		if(mAdapter != null){
+			AppItem item = mAdapter.items.get(0);
+			launchApp(item.intent);
 		}
-		launchApp(currentItem.info);
+		
 	}
 
 }

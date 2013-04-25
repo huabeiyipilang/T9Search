@@ -12,9 +12,19 @@ public class CachePersistReceiver extends BroadcastReceiver {
 		String action = intent.getAction();
 		Log.i("klilog", "CachePersistReceiver received action = "+action);
 		if(Intent.ACTION_BATTERY_CHANGED.equals(action)){
-			context.startService(new Intent(context, CacheService.class));
-		}else if(Intent.ACTION_PACKAGE_ADDED.equals(action) || Intent.ACTION_PACKAGE_REMOVED.equals(action)){
-			PackagesCache.getInstance(context).buildCache();
+//			context.startService(new Intent(context, CacheService.class));
+		}else if(Intent.ACTION_PACKAGE_ADDED.equals(action)){
+			String packageName = intent.getDataString().split(":")[1]; 
+			if(!context.getPackageName().equals(packageName)){
+				klilog.i("package add:"+packageName);
+				AppsManager.getInstance(context).onAppInstalled(packageName);
+			}
+		}else if(Intent.ACTION_PACKAGE_REMOVED.equals(action)){
+			String packageName = intent.getDataString().split(":")[1]; 
+			if(!context.getPackageName().equals(packageName)){
+				klilog.i("package remove:"+packageName);
+				AppsManager.getInstance(context).onAppUninstalled(packageName);
+			}
 		}
 	}
 

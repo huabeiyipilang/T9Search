@@ -174,7 +174,7 @@ public class T9KeyBoard extends LinearLayout implements OnClickListener, OnLongC
     }
     
     private void playTone(int tone, int durationMs) {
-        if(!SettingsHelper.getInstance().getBoolean(SettingsHelper.KEY_HAS_KEY_TONE, false)){
+        if(!SettingsHelper.getInstance(mContext).getBoolean(SettingsHelper.KEY_HAS_KEY_TONE, false)){
         	return;
         }
         AudioManager audioManager =

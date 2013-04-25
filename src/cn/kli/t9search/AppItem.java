@@ -9,6 +9,7 @@ public class AppItem {
 	public Intent intent;
 	public String pkg;
 	public int count;
+	public String key;
 	
 	public void setIntent(String intent){
 	}

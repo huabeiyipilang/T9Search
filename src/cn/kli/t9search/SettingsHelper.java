@@ -18,14 +18,10 @@ public class SettingsHelper {
 		mPrefEditor = mPref.edit();
 	}
 	
-	public static SettingsHelper init(Context context){
+	public static SettingsHelper getInstance(Context context){
 		if(sInstance == null){
 			sInstance = new SettingsHelper(context);
 		}
-		return sInstance;
-	}
-	
-	public static SettingsHelper getInstance(){
 		return sInstance;
 	}
 	

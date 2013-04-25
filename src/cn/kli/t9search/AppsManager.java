@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -14,6 +15,8 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import cn.kli.t9search.translate.NameToNumber;
+import cn.kli.t9search.translate.NameToNumberFactory;
 
 public class AppsManager {
 	enum State{
@@ -25,13 +28,17 @@ public class AppsManager {
 	
 	private PackageManager mPm;
 	private List<StateChangeListener> mListeners;
+	private DbHelper mDbHelper;
 	//state
 	private State mState;
+	
+	private String mDelayedQuery;
 
 	private AppsManager(Context context) {
 		mContext = context;
 		mPm = mContext.getPackageManager();
 		mListeners = new ArrayList<StateChangeListener>();
+		mDbHelper = new DbHelper(mContext);
 	}
 
 	public static AppsManager getInstance(Context context) {
@@ -52,10 +59,44 @@ public class AppsManager {
 	public void build(){
 		new BuildDataTask().execute("");
 	}
+	
+	public boolean hasBuilt(){
+		SharedPreferences pref = mContext.getSharedPreferences("AppsManager", Context.MODE_PRIVATE);
+		return pref.getBoolean("has_build", false);
+	}
+	
+	public void query(String index){
+		if(mState == State.QUERYING || mState == State.BUILDING){
+			mDelayedQuery = index;
+		}else{
+			new QueryTask().execute(index);
+		}
+	}
+	
+	private void checkDelayedQuery(){
+		if(!TextUtils.isEmpty(mDelayedQuery)){
+			new QueryTask().execute(mDelayedQuery);
+			mDelayedQuery = null;
+		}
+	}
+	
+	public void onAppInstalled(String pkg){
+		new BuildDataTask().execute(pkg);
+	}
+	
+	public void onAppUninstalled(String pkg){
+		mDbHelper.removeByPackage(pkg);
+		changeState(State.IDLE);
+	}
 
+	public void onAppOpen(AppItem item){
+		mDbHelper.appOpen(item);
+	}
+	
 	interface StateChangeListener{
 		void onStateChanged(State state);
 		void onProgressUpdate(int progress);
+		void onQueryCompleted(List<AppItem> list);
 	}
 	
 	private void changeState(State state) {
@@ -68,21 +109,39 @@ public class AppsManager {
 		}
 	}
 	
+	private class QueryTask extends AsyncTask<String, Integer, Integer>{
+		@Override
+		protected Integer doInBackground(String... arg0) {
+			List<AppItem> list = mDbHelper.query(arg0[0]);
+			for(StateChangeListener listener : mListeners){
+				listener.onQueryCompleted(list);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
+			checkDelayedQuery();
+		}
+		
+	}
+	
 	private class BuildDataTask extends AsyncTask<String, Integer, Integer> {
-		DbHelper dbHelper;
 		List<AppItem> itemList;
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			dbHelper = new DbHelper(mContext);
+			mDbHelper = new DbHelper(mContext);
 			itemList = new ArrayList<AppItem>();
 		}
 		
 		@Override
 		protected Integer doInBackground(String... arg0) {
 			changeState(State.BUILDING);
-			List<ResolveInfo> apps = findActivitiesByPackage(null);
-			
+			String pkg = arg0[0];
+			List<ResolveInfo> apps = findActivitiesByPackage(pkg);
+			NameToNumber translate = NameToNumberFactory.createChineseTranslate();
 			//spend 80% progress
 			int length = apps.size();
 			int i = 1;
@@ -91,15 +150,17 @@ public class AppsManager {
 				item.name = info.loadLabel(mPm).toString();
 				item.icon = drawableToBitmap(info.loadIcon(mPm));
 				item.intent = getLaunchIntent(info);
-				item.pkg = info.resolvePackageName;
+				item.pkg = info.activityInfo.packageName;
+				item.key = translate.convert(item.name);
 				itemList.add(item);
-				publishProgress(i/length*80);
+				klilog.i(item.name+"has been added");
+				publishProgress(i*80/length);
 				i++;
 			}
 			publishProgress(80);
 			
 			//spend 20% progress
-			dbHelper.addAppItems(itemList);
+			mDbHelper.addAppItems(itemList);
 			publishProgress(100);
 			
 			return null;
@@ -119,6 +180,11 @@ public class AppsManager {
 		@Override
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
+			SharedPreferences pref = mContext.getSharedPreferences("AppsManager", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean("has_build", true);
+			editor.commit();
+			checkDelayedQuery();
 			changeState(State.IDLE);
 		}
 
