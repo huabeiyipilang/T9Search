@@ -2,15 +2,11 @@ package cn.kli.t9search;
 
 import java.util.List;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.kli.t9search.AppsManager.State;
-import cn.kli.t9search.PackagesCache.PackageItem;
 
 public class AppsListView extends LinearLayout implements OnItemClickListener, IDataList {
 	
@@ -193,10 +188,15 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 			long id) {
 		if(mAdapter != null){
 			AppItem item = mAdapter.items.get(position);
-			mAppsManager.onAppOpen(item);
-			launchApp(item.intent);
+			selectItem(item);
 		}
 		mListener.onItemSelect(null);
+	}
+	
+	private void selectItem(AppItem item){
+		mAppsManager.onAppOpen(item);
+		Mediator.getInstance().keyboardClear();
+		launchApp(item.intent);
 	}
 	
 	private void launchApp(Intent intent){
@@ -226,7 +226,7 @@ public class AppsListView extends LinearLayout implements OnItemClickListener, I
 
 		if(mAdapter != null){
 			AppItem item = mAdapter.items.get(0);
-			launchApp(item.intent);
+			selectItem(item);
 		}
 		
 	}

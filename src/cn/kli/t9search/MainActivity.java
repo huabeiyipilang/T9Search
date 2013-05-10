@@ -27,7 +27,6 @@ public class MainActivity extends Activity implements TextWatcher, IViewsContain
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		startService(new Intent(this, CacheService.class));
 		setContentView(R.layout.activity_main);
 		EasyTracker.getInstance().setContext(this);
 		//views

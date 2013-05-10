@@ -74,7 +74,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="CachePersistReceiver" >
+        <receiver android:name="cn.kli.t9search.AppsReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
@@ -82,9 +82,6 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-
-        <service android:name="CacheService" >
-        </service>
 
         <activity android:name="Settings" >
         </activity>
