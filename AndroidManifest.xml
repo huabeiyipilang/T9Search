@@ -1,103 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.kli.t9search"
-    android:versionCode="2"
-    android:versionName="1.1 beta" >
-
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!-- 必须申明的权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- SDK 2.1新增权限，建议使用 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- SDK 3.0新增权限，建议使用(可选) -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.RESTART_PACKAGES"/> 
+    android:versionCode="3"
+    android:versionName="2.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="18" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:persistent="true"
         android:theme="@style/AppTheme" >
-
-        <!-- 渠道商编号，其中name请不要改，将value修改为渠道商编号。渠道名称请到mtj.baidu.com的渠道管理中修改 -->
-        <meta-data
-            android:name="BaiduMobAd_CHANNEL"
-            android:value="Baidu Market" />
-        <!-- 您从百度网站获取的APP KEY -->
-        <meta-data
-            android:name="BaiduMobAd_STAT_ID"
-            android:value="ee7d861282" />
-
-        <!-- 是否开启错误日志统计，默认为false -->
-        <meta-data
-            android:name="BaiduMobAd_EXCEPTION_LOG"
-            android:value="true" />
-        <!-- 日志发送策略，可选值：APP_START、ONCE_A_DAY、SET_TIME_INTERVAL，默认为APP_START -->
-        <meta-data
-            android:name="BaiduMobAd_SEND_STRATEGY"
-            android:value="APP_START" />
-        <!-- 日志发送策略 为SET_TIME_INTERVAL时，需设定时间间隔。取值为1-24的整数，默认为1 -->
-        <!-- <meta-data android:name="BaiduMobAd_TIME_INTERVAL" android:value="2" /> -->
-        <!-- 日志仅在wifi网络下发送，默认为false -->
-        <meta-data
-            android:name="BaiduMobAd_ONLY_WIFI"
-            android:value="true" />
-        <!-- 是否获取基站位置信息，默认为获取基站位置 -->
-        <meta-data
-            android:name="BaiduMobAd_CELL_LOCATION"
-            android:value="true" />
-
         <activity
             android:name="cn.kli.t9search.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <receiver android:name="cn.kli.t9search.AppsReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BATTERY_CHANGED" />
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.PACKAGE_REMOVED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
-        <activity android:name="Settings" >
-        </activity>
-
-        <!-- 注册AppActivity -->
-        <activity
-            android:name="com.baidu.mobads.AppActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation" />
-        <!-- 您从百度移动联盟网站获取的APPSID -->
-        <meta-data
-            android:name="BaiduMobAd_APP_ID"
-            android:value="c62936cb" />
-        <!-- 您从百度移动联盟网站获取的计费名 -->
-        <meta-data
-            android:name="BaiduMobAd_APP_SEC"
-            android:value="c62936cb" />
     </application>
 
 </manifest>
