@@ -1,5 +1,6 @@
 package cn.kli.t9search.utils;
 
+import java.util.Collection;
 import java.util.List;
 
 import se.emilsjolander.sprinkles.CursorList;
@@ -9,7 +10,7 @@ import se.emilsjolander.sprinkles.Query;
 import se.emilsjolander.sprinkles.QueryResult;
 
 
-public class DbUtil {
+public class DbUtils {
 
     /**
      * 清空表数据
@@ -61,10 +62,25 @@ public class DbUtil {
      * @return List<T>
      * @date 2014-6-12 上午10:55:56
      */
+    @SuppressWarnings("unchecked")
     public static <T extends QueryResult> List<T> getDataList(Class<T> clazz, String sql, Object... sqlArgs){
+        @SuppressWarnings("rawtypes")
         CursorList cursorList = Query.many(clazz, sql, sqlArgs).get();
         List<T> list = cursorList.asList();
         cursorList.close();
         return list;
+    }
+    
+    /**
+     * 保存数据集合
+     * @Title: saveAll
+     * @param list
+     * @return
+     * @return boolean
+     * @date 2014-6-22 上午10:21:11
+     */
+    public static boolean saveAll(Collection<? extends Model> collection){
+        ModelList<Model> modelList = new ModelList<Model>(collection);
+        return modelList.saveAll();
     }
 }

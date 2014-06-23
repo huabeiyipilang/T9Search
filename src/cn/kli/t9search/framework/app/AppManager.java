@@ -1,5 +1,8 @@
 package cn.kli.t9search.framework.app;
 
+import java.util.List;
+
+import cn.kli.t9search.utils.DbUtils;
 import android.content.Context;
 
 /**
@@ -19,14 +22,33 @@ public class AppManager {
         mContext = context;
     }
     
-    public AppManager init(Context context){
+    public static AppManager init(Context context){
         if(sInstance == null){
             sInstance = new AppManager(context);
         }
         return sInstance;
     }
     
-    public AppManager getInstance(){
+    public static AppManager getInstance(){
         return sInstance;
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void startLoadTask(IAppLoadListener listener){
+        LoadTask task = new LoadTask();
+        task.setListener(listener);
+        task.execute();
+    }
+    
+    /**
+     * 获取已安装的应用列表
+     * @Title: getAllApps
+     * @return
+     * @return List<AppInfo>
+     * @date 2014-6-22 下午2:36:15
+     */
+    public List<AppInfo> getAllApps(){
+        String sql = "select * from app_info";
+        return DbUtils.getDataList(AppInfo.class, sql, "");
     }
 }
