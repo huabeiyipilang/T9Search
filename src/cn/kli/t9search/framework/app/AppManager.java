@@ -48,7 +48,7 @@ public class AppManager {
      * @date 2014-6-22 下午2:36:15
      */
     public List<AppInfo> getAllApps(){
-        String sql = "select * from app_info";
+        String sql = "select * from app_info order by count desc";
         return DbUtils.getDataList(AppInfo.class, sql, "");
     }
 }

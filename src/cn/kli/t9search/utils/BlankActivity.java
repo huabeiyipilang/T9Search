@@ -30,11 +30,12 @@ public class BlankActivity extends BaseActivity {
         context.startActivity(intent);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_blank);
-        @SuppressWarnings("unchecked")
         Class<? extends BaseFragment> fragmentClass = (Class<? extends BaseFragment>)getIntent().getSerializableExtra(INTENT_FRAGMENT_NAME);
         if (fragmentClass != null) {
             setContentFragment(fragmentClass, getIntent().getExtras());

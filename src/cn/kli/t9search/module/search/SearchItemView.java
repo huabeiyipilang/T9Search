@@ -2,9 +2,6 @@ package cn.kli.t9search.module.search;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.widget.ImageView;
 import android.widget.TextView;
 import cn.kli.t9search.R;

@@ -2,8 +2,6 @@ package cn.kli.t9search.framework.app;
 
 import java.util.List;
 
-import cn.kli.t9search.utils.PinYinUtils;
-
 import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.annotations.AutoIncrementPrimaryKey;
 import se.emilsjolander.sprinkles.annotations.Column;
@@ -11,6 +9,7 @@ import se.emilsjolander.sprinkles.annotations.Table;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import cn.kli.t9search.utils.PinYinUtils;
 
 @Table("app_info")
 public class AppInfo extends Model {
@@ -62,6 +61,11 @@ public class AppInfo extends Model {
         }
         keyword_quanpin = sb.toString();
         keyword_quanpin_t9 = PinYinUtils.pinyin2T9(keyword_quanpin);
+    }
+    
+    public Intent getIntent(){
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
     
     public void merge(AppInfo appInfo){

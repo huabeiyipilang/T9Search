@@ -18,11 +18,12 @@ public class KeyboardView extends LinearLayout {
     private ImageButton mHideView;
     private TextView mDigitsView;
     
-    private OnDigitsChangedListener mListener;
+    private T9KeyboardListener mListener;
     private DigitsController mDigitsController = new DigitsController();
     
-    public interface OnDigitsChangedListener{
+    public interface T9KeyboardListener{
         void onDigitsChanged(String digits);
+        void onOpenFirstClick();
     }
 
     public KeyboardView(Context context, AttributeSet attrs) {
@@ -68,9 +69,18 @@ public class KeyboardView extends LinearLayout {
                 return true;
             }
         });
+        mOkView.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                if(mListener != null){
+                    mListener.onOpenFirstClick();
+                }
+            }
+        });
     }
     
-    public void setOnDigitsChangedListener(OnDigitsChangedListener listener){
+    public void setOnDigitsChangedListener(T9KeyboardListener listener){
         mListener = listener;
     }
     

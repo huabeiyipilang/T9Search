@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import cn.kli.t9search.App;
+import cn.kli.t9search.R;
 import cn.kli.t9search.utils.DbUtils;
 import cn.kli.t9search.utils.PinYinUtils;
 
@@ -92,9 +93,9 @@ class LoadTask<Void, Progress, Result> extends AsyncTask<Void, Float, Result> {
         return null;
     }
 
-    private Bitmap drawableToBitmap(Drawable drawable) {  
-        int w = drawable.getIntrinsicWidth();  
-        int h = drawable.getIntrinsicHeight();  
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        int w = App.getContext().getResources().getDimensionPixelSize(R.dimen.search_item_icon_size);
+        int h = w;  
   
         Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888  
                 : Bitmap.Config.RGB_565;  

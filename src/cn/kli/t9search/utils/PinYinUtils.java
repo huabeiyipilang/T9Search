@@ -81,9 +81,13 @@ public class PinYinUtils {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < pinyin.length(); ++i){
             char c = pinyin.charAt(i);
-            String t9 = getT9ByChar(c);
-            if(!TextUtils.isEmpty(t9)){
-                sb.append(t9);
+            if(c == ',' || (c >= '0' && c <= '9')){
+                sb.append(c);
+            }else{
+                String t9 = getT9ByChar(c);
+                if(!TextUtils.isEmpty(t9)){
+                    sb.append(t9);
+                }
             }
         }
         return sb.toString();
