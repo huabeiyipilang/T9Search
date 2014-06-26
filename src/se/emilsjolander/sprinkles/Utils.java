@@ -1,9 +1,5 @@
 package se.emilsjolander.sprinkles;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
-
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -12,6 +8,9 @@ import java.util.List;
 import se.emilsjolander.sprinkles.annotations.Table;
 import se.emilsjolander.sprinkles.exceptions.NoTableAnnotationException;
 import se.emilsjolander.sprinkles.typeserializers.TypeSerializer;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 
 class Utils {
 	

@@ -1,9 +1,9 @@
 package se.emilsjolander.sprinkles;
 
-import android.os.AsyncTask;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import android.os.AsyncTask;
 
 public class ModelList<E extends Model> extends ArrayList<E> {
 

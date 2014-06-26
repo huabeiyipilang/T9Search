@@ -3,12 +3,11 @@ package cn.kli.t9search.framework.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.kli.t9search.App;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import cn.kli.t9search.App;
 
 public class ItemAdapter extends BaseAdapter {
     

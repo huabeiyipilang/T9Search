@@ -3,13 +3,14 @@ package cn.kli.t9search.module.search;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.kli.t9search.R;
 
-public class KeyboardView extends LinearLayout {
+public class KeyboardView extends LinearLayout implements OnClickListener {
     
     private ImageButton mShowKeyboardView;
     private View mKeyboardView;
@@ -32,6 +33,28 @@ public class KeyboardView extends LinearLayout {
         initViews();
     }
 
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+        case R.id.btn_keyboard_show:
+            showKeyboard(true);
+            break;
+        case R.id.del:
+            mDigitsController.del();
+            break;
+        case R.id.ok:
+            if(mListener != null){
+                mListener.onOpenFirstClick();
+            }
+            break;
+        case R.id.hide:
+            showKeyboard(false);
+            break;
+         
+        }
+    }
+    
     private void initViews(){
         mShowKeyboardView = (ImageButton)findViewById(R.id.btn_keyboard_show);
         mKeyboardView = findViewById(R.id.ll_keyboard);
@@ -42,40 +65,27 @@ public class KeyboardView extends LinearLayout {
         
         int[] keyids = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
                 R.id.nine, R.id.zero};
-        View.OnClickListener onDigitsClickListener = new View.OnClickListener() {
-            
-            @Override
-            public void onClick(View view) {
-                mDigitsController.push(String.valueOf(view.getTag()));
-            }
-        };
         
         for(int id : keyids){
-            findViewById(id).setOnClickListener(onDigitsClickListener);
+            findViewById(id).setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View view) {
+                    mDigitsController.push(String.valueOf(view.getTag()));
+                }
+            });
         }
         
-        mDelView.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View arg0) {
-                mDigitsController.del();
-            }
-        });
+        mDelView.setOnClickListener(this);
+        mOkView.setOnClickListener(this);
+        mHideView.setOnClickListener(this);
+        mShowKeyboardView.setOnClickListener(this);
         mDelView.setOnLongClickListener(new OnLongClickListener() {
             
             @Override
             public boolean onLongClick(View v) {
                 mDigitsController.clear();
                 return true;
-            }
-        });
-        mOkView.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View arg0) {
-                if(mListener != null){
-                    mListener.onOpenFirstClick();
-                }
             }
         });
     }
@@ -86,6 +96,11 @@ public class KeyboardView extends LinearLayout {
     
     private void onDigitsChanged(String digits){
         mDigitsView.setText(digits);
+    }
+    
+    public void showKeyboard(boolean show){
+        mKeyboardView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mShowKeyboardView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
     
     private class DigitsController{

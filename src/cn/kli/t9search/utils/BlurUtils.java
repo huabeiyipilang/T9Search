@@ -1,8 +1,6 @@
 package cn.kli.t9search.utils;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 public class BlurUtils {
     /** 水平方向模糊度 */

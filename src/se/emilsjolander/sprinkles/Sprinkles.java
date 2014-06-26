@@ -1,10 +1,5 @@
 package se.emilsjolander.sprinkles;
 
-import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +18,10 @@ import se.emilsjolander.sprinkles.typeserializers.IntentSerializer;
 import se.emilsjolander.sprinkles.typeserializers.LongSerializer;
 import se.emilsjolander.sprinkles.typeserializers.StringSerializer;
 import se.emilsjolander.sprinkles.typeserializers.TypeSerializer;
+import android.content.Context;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 public class Sprinkles {
 

@@ -1,9 +1,9 @@
 package se.emilsjolander.sprinkles.typeserializers;
 
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.database.Cursor;
-
-import java.util.Date;
 
 public class DateSerializer implements TypeSerializer<Date> {
 

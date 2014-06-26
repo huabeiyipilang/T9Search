@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:orientation="horizontal" >
 
             <TextView
@@ -45,6 +45,15 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dialpad" />
 
             <ImageButton
                 android:id="@+id/one"
@@ -78,18 +87,6 @@
                 android:soundEffectsEnabled="false"
                 android:src="@drawable/dial_num_3_wht"
                 android:tag="3" />
-
-            <Button
-                android:id="@+id/ok"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:text="OPEN"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,6 +94,15 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dialpad" />
 
             <ImageButton
                 android:id="@+id/four"
@@ -130,17 +136,6 @@
                 android:soundEffectsEnabled="false"
                 android:src="@drawable/dial_num_6_wht"
                 android:tag="6" />
-
-            <ImageButton
-                android:id="@+id/zero"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_0_wht"
-                android:tag="0" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,6 +143,15 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dialpad" />
 
             <ImageButton
                 android:id="@+id/seven"
@@ -181,17 +185,48 @@
                 android:soundEffectsEnabled="false"
                 android:src="@drawable/dial_num_9_wht"
                 android:tag="9" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
 
             <ImageButton
                 android:id="@+id/hide"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dialpad" />
+
+            <ImageButton
+                android:id="@+id/zero"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dial_num_bg"
                 android:scaleType="centerInside"
                 android:soundEffectsEnabled="false"
-                android:src="@drawable/dialpad" />
+                android:src="@drawable/dial_num_0_wht"
+                android:tag="0" />
+
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:text="OPEN"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
+        
     </LinearLayout>
 
 </LinearLayout>

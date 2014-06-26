@@ -1,8 +1,8 @@
 package se.emilsjolander.sprinkles;
 
-import android.database.Cursor;
-
 import java.util.Iterator;
+
+import android.database.Cursor;
 
 class CursorIterator<T extends QueryResult> implements Iterator<T> {
 

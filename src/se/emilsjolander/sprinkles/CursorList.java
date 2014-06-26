@@ -1,11 +1,11 @@
 package se.emilsjolander.sprinkles;
 
-import android.database.Cursor;
-
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import android.database.Cursor;
 
 /**
  *

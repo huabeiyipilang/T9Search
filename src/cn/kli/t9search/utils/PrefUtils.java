@@ -1,8 +1,8 @@
 package cn.kli.t9search.utils;
 
-import cn.kli.t9search.App;
 import android.content.Context;
 import android.content.SharedPreferences;
+import cn.kli.t9search.App;
 
 public class PrefUtils {
 

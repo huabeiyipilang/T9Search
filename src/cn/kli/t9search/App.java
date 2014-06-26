@@ -1,11 +1,10 @@
 package cn.kli.t9search;
 
-import cn.kli.t9search.framework.app.AppInfo;
-import cn.kli.t9search.framework.app.AppManager;
-
 import se.emilsjolander.sprinkles.Migration;
 import se.emilsjolander.sprinkles.Sprinkles;
 import android.app.Application;
+import cn.kli.t9search.framework.app.AppInfo;
+import cn.kli.t9search.framework.app.AppManager;
 
 public class App extends Application {
     

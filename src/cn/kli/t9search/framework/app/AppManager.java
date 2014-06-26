@@ -2,8 +2,8 @@ package cn.kli.t9search.framework.app;
 
 import java.util.List;
 
-import cn.kli.t9search.utils.DbUtils;
 import android.content.Context;
+import cn.kli.t9search.utils.DbUtils;
 
 /**
  * 应用管理
@@ -33,7 +33,6 @@ public class AppManager {
         return sInstance;
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void startLoadTask(IAppLoadListener listener){
         LoadTask task = new LoadTask();
         task.setListener(listener);
@@ -48,7 +47,13 @@ public class AppManager {
      * @date 2014-6-22 下午2:36:15
      */
     public List<AppInfo> getAllApps(){
-        String sql = "select * from app_info order by count desc";
+      String sql = "select * from app_info where installed = 1 order by count desc";
+//        String sql = "select * from app_info order by count desc";
         return DbUtils.getDataList(AppInfo.class, sql, "");
+    }
+    
+    public boolean isInited(){
+        List<AppInfo> list = DbUtils.getAllData(AppInfo.class);
+        return list != null && list.size() > 0;
     }
 }

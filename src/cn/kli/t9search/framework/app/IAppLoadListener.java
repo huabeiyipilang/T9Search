@@ -6,5 +6,6 @@ public interface IAppLoadListener {
         String info;
     }
     
-    void onProgressUpdate(float progress);
+    void onProgressUpdate(float progress, float max, String info);
+    void onFinished();
 }

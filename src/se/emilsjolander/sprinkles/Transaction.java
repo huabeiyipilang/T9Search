@@ -1,10 +1,10 @@
 package se.emilsjolander.sprinkles;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Transaction represents a database transaction in sprinkles.

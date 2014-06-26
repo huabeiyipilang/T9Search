@@ -3,6 +3,8 @@ package cn.kli.t9search.framework.app;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.emilsjolander.sprinkles.SqlStatement;
+import se.emilsjolander.sprinkles.Transaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,10 +17,16 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import cn.kli.t9search.App;
 import cn.kli.t9search.R;
+import cn.kli.t9search.framework.app.IAppLoadListener.Result;
+import cn.kli.t9search.framework.app.LoadTask.Progress;
 import cn.kli.t9search.utils.DbUtils;
+import cn.kli.t9search.utils.Logger;
 import cn.kli.t9search.utils.PinYinUtils;
 
-class LoadTask<Void, Progress, Result> extends AsyncTask<Void, Float, Result> {
+class LoadTask extends AsyncTask<Void, Progress, Result> {
+    
+    private Logger log = new Logger(LoadTask.class);
+    
     private IAppLoadListener mListener;
     private PackageManager mPackageManager = App.getContext().getPackageManager();
     private List<AppInfo> mAppInDb;
@@ -35,13 +43,29 @@ class LoadTask<Void, Progress, Result> extends AsyncTask<Void, Float, Result> {
 
     @Override
     protected Result doInBackground(Void... arg0) {
-        //step1  10%
+        long start = System.currentTimeMillis();
+        //step1  
+        float cost1 = 1;
+        float cost2 = 4;
+        float cost3 = 16;
+        float total = cost1 + cost2 + cost3;
+        Progress progress = new Progress();
+        progress.max = total;
+        progress.progress = 0;
+        progress.info = "加载应用";
+        publishProgress(progress);
+
         List<ResolveInfo> resolveInfos = findActivitiesByPackage(null);
-        publishProgress(10f);
+        for(AppInfo info : mAppInDb){
+            info.installed = false;
+        }
+        progress.progress = cost1;
+        progress.info = "生成索引";
+        publishProgress(progress);
         
-        //step2  80%
+        //step2  16%
         int size = resolveInfos.size();
-        float itemSpend = 80f / size;
+        float itemSpend = cost2 / size;
         List<AppInfo> newApps = new ArrayList<AppInfo>();
         
         for(int i = 0; i < size; i++){
@@ -59,29 +83,57 @@ class LoadTask<Void, Progress, Result> extends AsyncTask<Void, Float, Result> {
             }else{
                 newApps.add(item);
             }
-            
-            publishProgress(10f + (i + 1) * itemSpend);
+
+            progress.progress = cost1 + (i + 1) * itemSpend;
+            publishProgress(progress);
         }
-        
-        //step3  10%
         mAppInDb.addAll(newApps);
-        DbUtils.saveAll(mAppInDb);
-        publishProgress(100f);
-        
+
+        //step3  64%
+        progress.info = "保存数据";
+        progress.progress = cost1 + cost2;
+        publishProgress(progress);
+        itemSpend = cost3 / mAppInDb.size();
+        Transaction t = new Transaction();
+        for(int i = 0; i < size; i++){
+            mAppInDb.get(i).save(t);
+            progress.progress = cost2 + (i + 1) * itemSpend;
+            publishProgress(progress);
+        }
+        t.setSuccessful(true);
+        t.finish();
+
+        progress.progress = progress.max;
+        progress.info = "完成";
+        publishProgress(progress);
+        log.i("cost:"+(System.currentTimeMillis() - start));
         return null;
     }
 
     @Override
     protected void onPostExecute(Result result) {
         super.onPostExecute(result);
+        if(mListener != null){
+            mListener.onFinished();
+        }
     }
+    
+    
 
     @Override
-    protected void onProgressUpdate(Float... values) {
+    protected void onProgressUpdate(Progress... values) {
         super.onProgressUpdate(values);
         if(mListener != null){
-            mListener.onProgressUpdate(values[0]);
+            Progress progress = values[0];
+            mListener.onProgressUpdate(progress.progress, progress.max, progress.info);
         }
+    }
+
+
+    public static class Progress{
+        float max;
+        float progress;
+        String info;
     }
     
     private AppInfo findAppInfoFromDb(AppInfo info){

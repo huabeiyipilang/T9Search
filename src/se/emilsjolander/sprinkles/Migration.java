@@ -1,12 +1,11 @@
 package se.emilsjolander.sprinkles;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import se.emilsjolander.sprinkles.annotations.ConflictClause;
 import se.emilsjolander.sprinkles.exceptions.NoSuchColumnFoundException;
+import android.database.sqlite.SQLiteDatabase;
 
 /**
  * A class representing database migration. Multiple statements can be made within one migration.

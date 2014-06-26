@@ -2,7 +2,6 @@ package cn.kli.t9search.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
