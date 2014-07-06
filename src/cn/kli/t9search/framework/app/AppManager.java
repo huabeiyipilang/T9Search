@@ -2,6 +2,7 @@ package cn.kli.t9search.framework.app;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import cn.kli.t9search.utils.DbUtils;
 
@@ -33,10 +34,11 @@ public class AppManager {
         return sInstance;
     }
     
-    public void startLoadTask(IAppLoadListener listener){
-        LoadTask task = new LoadTask();
+    public LoadTask startLoadTask(Activity activity, IAppLoadListener listener, boolean showDialog){
+        LoadTask task = new LoadTask(activity, showDialog);
         task.setListener(listener);
         task.execute();
+        return task;
     }
     
     /**

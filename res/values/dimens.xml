@@ -7,4 +7,15 @@
     <dimen name="search_item_icon_size">60dp</dimen>
     <dimen name="search_list_v_divider">20dp</dimen>
 
+    <dimen name="text_size_1">8sp</dimen>
+    <dimen name="text_size_2">9sp</dimen>
+    <dimen name="text_size_3">10sp</dimen>
+    <dimen name="text_size_4">11sp</dimen>
+    <dimen name="text_size_5">12sp</dimen>
+    <dimen name="text_size_6">13sp</dimen>
+    <dimen name="text_size_7">14sp</dimen>
+    <dimen name="text_size_8">15sp</dimen>
+    <dimen name="text_size_9">16sp</dimen>
+    <dimen name="text_size_10">17sp</dimen>
+    <dimen name="text_size_11">18sp</dimen>
 </resources>

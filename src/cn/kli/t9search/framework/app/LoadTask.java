@@ -5,6 +5,8 @@ import java.util.List;
 
 import se.emilsjolander.sprinkles.SqlStatement;
 import se.emilsjolander.sprinkles.Transaction;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,21 +25,46 @@ import cn.kli.t9search.utils.DbUtils;
 import cn.kli.t9search.utils.Logger;
 import cn.kli.t9search.utils.PinYinUtils;
 
-class LoadTask extends AsyncTask<Void, Progress, Result> {
+public class LoadTask extends AsyncTask<Void, Progress, Result> {
     
     private Logger log = new Logger(LoadTask.class);
     
     private IAppLoadListener mListener;
     private PackageManager mPackageManager = App.getContext().getPackageManager();
     private List<AppInfo> mAppInDb;
+    private Activity mActivity;
+    private ProgressDialog mDialog;
+
+    public LoadTask(Activity activity, boolean showDialog) {
+        super();
+        mActivity = activity;
+        if(showDialog){
+            mDialog = new ProgressDialog(mActivity);
+        }
+    }
     
     public void setListener(IAppLoadListener listener){
         mListener = listener;
     }
     
+    
+    
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        if(mDialog != null){
+            mDialog.dismiss();
+            mDialog = null;
+        }
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if(mDialog != null){
+            mDialog.setMessage("开始创建索引");
+            mDialog.show();
+        }
         mAppInDb = DbUtils.getAllData(AppInfo.class);
     }
 
@@ -71,6 +98,10 @@ class LoadTask extends AsyncTask<Void, Progress, Result> {
         for(int i = 0; i < size; i++){
             ResolveInfo info = resolveInfos.get(i);
             AppInfo item = new AppInfo();
+            item.packageName = info.activityInfo.packageName;
+            if(item.packageName.equals(App.getContext().getPackageName())){
+                continue;
+            }
             item.title = info.loadLabel(mPackageManager).toString();
             item.icon = drawableToBitmap(info.loadIcon(mPackageManager));
             item.intent = getLaunchIntent(info);
@@ -95,6 +126,7 @@ class LoadTask extends AsyncTask<Void, Progress, Result> {
         publishProgress(progress);
         itemSpend = cost3 / mAppInDb.size();
         Transaction t = new Transaction();
+        size = mAppInDb.size();
         for(int i = 0; i < size; i++){
             mAppInDb.get(i).save(t);
             progress.progress = cost2 + (i + 1) * itemSpend;
@@ -116,6 +148,10 @@ class LoadTask extends AsyncTask<Void, Progress, Result> {
         if(mListener != null){
             mListener.onFinished();
         }
+
+        if(mDialog != null){
+            mDialog.dismiss();
+        }
     }
     
     
@@ -123,9 +159,12 @@ class LoadTask extends AsyncTask<Void, Progress, Result> {
     @Override
     protected void onProgressUpdate(Progress... values) {
         super.onProgressUpdate(values);
+        Progress progress = values[0];
         if(mListener != null){
-            Progress progress = values[0];
             mListener.onProgressUpdate(progress.progress, progress.max, progress.info);
+        }
+        if(mDialog != null){
+            mDialog.setMessage(progress.info + " " + (int)(progress.progress * 100 / progress.max)+"%");
         }
     }
 

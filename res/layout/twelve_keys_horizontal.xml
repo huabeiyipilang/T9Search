@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
@@ -26,18 +26,9 @@
                 android:freezesText="true"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
+                android:gravity="center"
                 android:textAppearance="@android:style/TextAppearance.Large"
-                android:textColor="@android:color/black" />
-
-            <ImageButton
-                android:id="@+id/del"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_del_normal" />
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -47,6 +38,7 @@
             android:orientation="horizontal" >
 
             <ImageButton
+                android:id="@+id/ib_setting"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -197,22 +189,11 @@
                 android:id="@+id/hide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dialpad" />
-
-            <ImageButton
-                android:id="@+id/zero"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dial_num_bg"
                 android:scaleType="centerInside"
                 android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_0_wht"
-                android:tag="0" />
+                android:src="@drawable/dialpad" />
 
             <Button
                 android:id="@+id/ok"
@@ -225,6 +206,28 @@
                 android:text="OPEN"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@android:color/darker_gray" />
+
+            <ImageButton
+                android:id="@+id/zero"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dial_num_0_wht"
+                android:tag="0" />
+
+            <ImageButton
+                android:id="@+id/del"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/dial_num_bg"
+                android:scaleType="centerInside"
+                android:soundEffectsEnabled="false"
+                android:src="@drawable/dial_num_del_normal" />
+
         </LinearLayout>
         
     </LinearLayout>

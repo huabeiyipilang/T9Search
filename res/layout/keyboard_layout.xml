@@ -2,18 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#cc000000" >
 
     <include
         android:id="@+id/ll_keyboard"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="250dp"
         layout="@layout/twelve_keys_horizontal" />
 
     <ImageButton
         android:id="@+id/btn_keyboard_show"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:background="@drawable/dial_num_bg"
         android:src="@drawable/dialpad"
         android:visibility="gone" />

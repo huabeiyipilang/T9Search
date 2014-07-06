@@ -1,5 +1,6 @@
 package cn.kli.t9search.framework.base;
 
+import cn.kli.t9search.analytics.Umeng;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,18 @@ abstract public class BaseFragment extends Fragment {
         initViews(rootView);
         initDatas();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Umeng.onFragmentResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Umeng.onFragmentPause(this);
     }
 
     abstract public int getLayoutRes();

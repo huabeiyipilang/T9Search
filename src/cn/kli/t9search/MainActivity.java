@@ -1,24 +1,45 @@
 package cn.kli.t9search;
 
 import android.os.Bundle;
-import cn.kli.t9search.framework.base.BaseActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import cn.kli.t9search.analytics.Umeng;
+import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.module.search.SearchFragment;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends FragmentActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
+        Umeng.init();
+        setContentView(R.layout.activity_main);
         setContentFragment(SearchFragment.class, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Umeng.onActivityResume();
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Umeng.onActivityPause();
     }
 
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
-//        super.onBackPressed();
     }
 
-    
-    
+    protected void setContentFragment(Class<? extends BaseFragment> fragmentClass, Bundle arguments) {
+        Fragment fragment = Fragment.instantiate(this, fragmentClass.getName(), arguments);
+
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.content_frame, fragment);
+        t.commit();
+    }
 }

@@ -11,17 +11,21 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import cn.kli.t9search.App;
 import cn.kli.t9search.R;
+import cn.kli.t9search.analytics.Umeng;
 import cn.kli.t9search.framework.app.AppInfo;
 import cn.kli.t9search.framework.app.AppManager;
 import cn.kli.t9search.framework.app.IAppLoadListener;
+import cn.kli.t9search.framework.app.LoadTask;
 import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
@@ -32,12 +36,11 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
     private View mSearchViews;
-    private View mLoadingViews;
-    private TextView mProgressState;
-    private ProgressBar mLoadingBar;
 
     private List<AppInfo> mAllAppList;
     private ItemAdapter mAdapter;
+    
+    private LoadTask mLoadTask;
 
     private AppManager mAppManager = AppManager.getInstance();
 
@@ -49,53 +52,56 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     @Override
     public void initViews(View root) {
         mSearchViews = root.findViewById(R.id.search_content);
-        mLoadingViews = root.findViewById(R.id.loading_content);
         mGridView = (GridView)root.findViewById(R.id.gv_list);
         mKeyboardView = (KeyboardView)root.findViewById(R.id.kbv_keyboard);
         mBkgView = (ImageView)root.findViewById(R.id.iv_bg);
-        mProgressState = (TextView)root.findViewById(R.id.tv_progress_state);
-        mLoadingBar = (ProgressBar)root.findViewById(R.id.pb_progress);
 
         mKeyboardView.setOnDigitsChangedListener(this);
-        initBackgroud();
+//        initBackgroud();
     }
 
     @Override
     public void initDatas() {
         if(mAppManager.isInited()){
-            mSearchViews.setVisibility(View.VISIBLE);
-            mLoadingViews.setVisibility(View.GONE);
             mAdapter = new ItemAdapter();
             mAdapter.setView(SearchItemView.class);
             mGridView.setAdapter(mAdapter);
             mAllAppList = AppManager.getInstance().getAllApps();
             updateList(mAllAppList);
             mGridView.setOnItemClickListener(this);
+            mGridView.setOnScrollListener(new OnScrollListener() {
+                
+                @Override
+                public void onScrollStateChanged(AbsListView arg0, int state) {
+                    if(state == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                        mKeyboardView.showKeyboard(false);
+                    }
+                }
+                
+                @Override
+                public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+                    
+                }
+            });
         }else{
             loadApp();
         }
     }
 
     private void loadApp(){
-        mSearchViews.setVisibility(View.GONE);
-        mLoadingViews.setVisibility(View.VISIBLE);
-        mAppManager.startLoadTask(new IAppLoadListener(){
+        mLoadTask = mAppManager.startLoadTask(getActivity(), new IAppLoadListener(){
 
             @Override
             public void onProgressUpdate(float progress, float max, String info) {
-                if(progress == 0){
-                    mLoadingBar.setMax((int)(max * 100));
-                }
-                mLoadingBar.setProgress((int)(progress * 100));
-                mProgressState.setText(info);
+                
             }
 
             @Override
             public void onFinished() {
                 initDatas();
             }
-
-        });
+            
+        }, true);
     }
 
     private void initBackgroud(){
@@ -167,23 +173,35 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onOpenFirstClick() {
         Object o = mAdapter.getItem(0);
         if(o != null && o instanceof AppInfo){
-            startApp((AppInfo)o);
+            startApp(true, (AppInfo)o);
         }
     }
 
-    private void startApp(AppInfo info){
+    private void startApp(boolean fromOpenButton, AppInfo info){
         if(info != null){
             startActivity(info.getIntent());
             info.count++;
             info.saveAsync();
+            Umeng.onEventOpenApp(fromOpenButton, info);
         }
+        mKeyboardView.clearInput();
     }
 
     @Override
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
         Object o = mAdapter.getItem(position);
         if(o != null && o instanceof AppInfo){
-            startApp((AppInfo)o);
+            startApp(false, (AppInfo)o);
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mLoadTask != null && !mLoadTask.isCancelled()){
+            mLoadTask.cancel(true);
+        }
+    }
+    
+    
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res/cn.kli.t9search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_t9fb_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="按键反馈"
+            my:settingType="type_title" >
+        </cn.kli.t9search.framework.widget.SettingItemView>
+        
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_rebuild_index"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="重建索引"
+            my:subTitleText="重新建立T9索引，当应用列表显示有误时使用此项"
+            my:settingType="type_click" >
+        </cn.kli.t9search.framework.widget.SettingItemView>
+        
+    </LinearLayout>
+
+</ScrollView>

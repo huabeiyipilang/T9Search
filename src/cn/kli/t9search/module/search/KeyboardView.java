@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.kli.t9search.R;
+import cn.kli.t9search.module.settings.SettingsFragment;
+import cn.kli.t9search.utils.BlankActivity;
 
 public class KeyboardView extends LinearLayout implements OnClickListener {
     
@@ -55,6 +57,10 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         }
     }
     
+    public void clearInput(){
+        mDigitsController.clear();
+    }
+    
     private void initViews(){
         mShowKeyboardView = (ImageButton)findViewById(R.id.btn_keyboard_show);
         mKeyboardView = findViewById(R.id.ll_keyboard);
@@ -86,6 +92,14 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
             public boolean onLongClick(View v) {
                 mDigitsController.clear();
                 return true;
+            }
+        });
+        
+        findViewById(R.id.ib_setting).setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View arg0) {
+                BlankActivity.startFragmentActivity(getContext(), SettingsFragment.class, null);
             }
         });
     }
