@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.kli.t9search.R;
 import cn.kli.t9search.module.settings.SettingsFragment;
+import cn.kli.t9search.module.settings.SettingsManager;
 import cn.kli.t9search.utils.BlankActivity;
+import cn.kli.t9search.utils.VibrateUtils;
 
 public class KeyboardView extends LinearLayout implements OnClickListener {
     
@@ -38,6 +40,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
 
     @Override
     public void onClick(View view) {
+        onKeyClickFeedback();
         switch(view.getId()){
         case R.id.btn_keyboard_show:
             showKeyboard(true);
@@ -61,6 +64,14 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mDigitsController.clear();
     }
     
+    private void onKeyClickFeedback(){
+        
+        if(SettingsManager.getVibrateFeedback()){
+            VibrateUtils.getInstance().vibrateShortly();
+        }
+        
+    }
+    
     private void initViews(){
         mShowKeyboardView = (ImageButton)findViewById(R.id.btn_keyboard_show);
         mKeyboardView = findViewById(R.id.ll_keyboard);
@@ -77,6 +88,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
                 
                 @Override
                 public void onClick(View view) {
+                    onKeyClickFeedback();
                     mDigitsController.push(String.valueOf(view.getTag()));
                 }
             });

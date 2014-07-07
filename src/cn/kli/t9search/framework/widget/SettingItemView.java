@@ -6,8 +6,8 @@ import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +24,16 @@ public class SettingItemView extends LinearLayout {
     private CheckBox mSwitchView;
     
     private OnSettingItemClickListener mOnClickListener;
+    private OnSettingItemCheckListener mOnCheckListener;
     
     private int mType = TYPE_CLICK;
     
     public interface OnSettingItemClickListener{
         void onSettingItemClick(View view);
+    }
+    
+    public interface OnSettingItemCheckListener{
+        void onSettingItemCheckChanged(View view, boolean checked);
     }
     
     public SettingItemView(Context context, AttributeSet attrs) {
@@ -62,13 +67,22 @@ public class SettingItemView extends LinearLayout {
         mTitleView = (TextView)findViewById(R.id.tv_title);
         mSubTitleView = (TextView)findViewById(R.id.tv_subtitle);
         mSwitchView = (CheckBox)findViewById(R.id.cb_switch);
+        mSwitchView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(CompoundButton arg0, boolean checked) {
+                if(mOnCheckListener != null){
+                    mOnCheckListener.onSettingItemCheckChanged(SettingItemView.this, checked);
+                }
+            }
+        });
     }
     
     @SuppressLint("Recycle")
     private void initAttrs(AttributeSet attrs){
         TypedArray t = getContext().obtainStyledAttributes(attrs,R.styleable.SettingItemView);
         
-        int type = t.getInt(R.styleable.SettingItemView_settingType, TYPE_CLICK);
+        mType = t.getInt(R.styleable.SettingItemView_settingType, TYPE_CLICK);
         String title = t.getString(R.styleable.SettingItemView_titleText);
         String subTitle = t.getString(R.styleable.SettingItemView_subTitleText);
 
@@ -78,7 +92,7 @@ public class SettingItemView extends LinearLayout {
             mSubTitleView.setText(subTitle);
         }
         
-        switch(type){
+        switch(mType){
         case TYPE_CHECK:
             mTitleView.setText(title);
             mSwitchView.setVisibility(View.VISIBLE);
@@ -97,8 +111,8 @@ public class SettingItemView extends LinearLayout {
         }
     }
     
-    public void setOnCheckChangeListener(OnCheckedChangeListener listener){
-        mSwitchView.setOnCheckedChangeListener(listener);
+    public void setOnCheckChangeListener(OnSettingItemCheckListener listener){
+        mOnCheckListener = listener;
     }
     
     public void setSwitchChecked(boolean checked){

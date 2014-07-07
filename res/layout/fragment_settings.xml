@@ -8,14 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
-
-        <cn.kli.t9search.framework.widget.SettingItemView
-            android:id="@+id/siv_t9fb_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            my:titleText="按键反馈"
-            my:settingType="type_title" >
-        </cn.kli.t9search.framework.widget.SettingItemView>
         
         <cn.kli.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_rebuild_index"
@@ -23,9 +15,39 @@
             android:layout_height="wrap_content"
             my:titleText="重建索引"
             my:subTitleText="重新建立T9索引，当应用列表显示有误时使用此项"
-            my:settingType="type_click" >
-        </cn.kli.t9search.framework.widget.SettingItemView>
+            my:settingType="type_click" />
         
+
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_t9fb_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="按键反馈"
+            my:settingType="type_title" />
+        
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_fb_vibrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="震动反馈"
+            my:subTitleText="触摸T9键盘时振动反馈"
+            my:settingType="type_check" />
+        
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_fb_sound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="声音反馈"
+            my:subTitleText="触摸T9键盘时声音反馈"
+            my:settingType="type_check" />
+        
+        <cn.kli.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            my:titleText="用户反馈"
+            my:subTitleText="反馈问题、吐槽意见、指点建议"
+            my:settingType="type_click" />
     </LinearLayout>
 
 </ScrollView>

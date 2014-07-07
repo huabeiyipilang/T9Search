@@ -5,20 +5,17 @@ import java.util.List;
 
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import cn.kli.t9search.App;
 import cn.kli.t9search.R;
 import cn.kli.t9search.analytics.Umeng;
@@ -166,7 +163,14 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     private void updateList(List<AppInfo> list){
         mAdapter.setData(list);
-        mAdapter.notifyDataSetChanged();
+        getActivity().runOnUiThread(new Runnable(){
+
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+            
+        });
     }
 
     @Override
@@ -182,6 +186,16 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             startActivity(info.getIntent());
             info.count++;
             info.saveAsync();
+            new Thread(){
+
+                @Override
+                public void run() {
+                    super.run();
+                    mAllAppList = AppManager.getInstance().getAllApps();
+                    updateList(mAllAppList);
+                }
+                
+            }.start();
             Umeng.onEventOpenApp(fromOpenButton, info);
         }
         mKeyboardView.clearInput();
