@@ -6,9 +6,17 @@ import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.annotations.AutoIncrementPrimaryKey;
 import se.emilsjolander.sprinkles.annotations.Column;
 import se.emilsjolander.sprinkles.annotations.Table;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import cn.kli.t9search.App;
+import cn.kli.t9search.R;
 import cn.kli.t9search.utils.PinYinUtils;
 
 @Table("app_info")
@@ -47,6 +55,45 @@ public class AppInfo extends Model {
     
     @Column("installed")
     public boolean installed = true;
+    
+    
+    public static AppInfo newInstance(ResolveInfo info){
+        PackageManager pkgManager = App.getContext().getPackageManager();
+        AppInfo app = new AppInfo();
+        app.packageName = info.activityInfo.packageName;
+        app.title = info.loadLabel(pkgManager).toString();
+        app.icon = drawableToBitmap(info.loadIcon(pkgManager));
+        app.intent = getLaunchIntent(info);
+        app.packageName = info.activityInfo.packageName;
+        app.setQuanpin(PinYinUtils.string2PinYin(app.title));
+        return app;
+    }
+    
+    private static Intent getLaunchIntent(ResolveInfo reInfo){
+        if(reInfo == null){
+            return null;
+        }
+        String packageName = reInfo.activityInfo.packageName;
+        String name = reInfo.activityInfo.name;
+        ComponentName cn = new ComponentName(packageName,name);
+        Intent intent = new Intent();
+        intent.setComponent(cn);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
+    }
+
+    private static Bitmap drawableToBitmap(Drawable drawable) {
+        int w = App.getContext().getResources().getDimensionPixelSize(R.dimen.search_item_icon_size);
+        int h = w;  
+  
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888  
+                : Bitmap.Config.RGB_565;  
+        Bitmap bitmap = Bitmap.createBitmap(w, h, config);  
+        Canvas canvas = new Canvas(bitmap);  
+        drawable.setBounds(0, 0, w, h);  
+        drawable.draw(canvas);  
+        return bitmap;  
+    } 
 
     public boolean equals(AppInfo appInfo) {
         return intent!= null && intent.equals(intent) 

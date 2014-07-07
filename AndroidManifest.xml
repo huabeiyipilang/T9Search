@@ -46,6 +46,16 @@
         <activity
             android:name="com.umeng.fb.ContactActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+
+        <receiver android:name=".framework.app.AppsReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

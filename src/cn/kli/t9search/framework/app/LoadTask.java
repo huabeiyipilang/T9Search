@@ -97,16 +97,10 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         
         for(int i = 0; i < size; i++){
             ResolveInfo info = resolveInfos.get(i);
-            AppInfo item = new AppInfo();
-            item.packageName = info.activityInfo.packageName;
-            if(item.packageName.equals(App.getContext().getPackageName())){
+            if(info.activityInfo.packageName.equals(App.getContext().getPackageName())){
                 continue;
             }
-            item.title = info.loadLabel(mPackageManager).toString();
-            item.icon = drawableToBitmap(info.loadIcon(mPackageManager));
-            item.intent = getLaunchIntent(info);
-            item.packageName = info.activityInfo.packageName;
-            item.setQuanpin(PinYinUtils.string2PinYin(item.title));
+            AppInfo item = AppInfo.newInstance(info);
             
             AppInfo app = findAppInfoFromDb(item);
             if(app != null){
@@ -152,6 +146,8 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         if(mDialog != null){
             mDialog.dismiss();
         }
+        
+        AppManager.getInstance().notifyObservers();
     }
     
     
@@ -183,19 +179,6 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         }
         return null;
     }
-
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        int w = App.getContext().getResources().getDimensionPixelSize(R.dimen.search_item_icon_size);
-        int h = w;  
-  
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888  
-                : Bitmap.Config.RGB_565;  
-        Bitmap bitmap = Bitmap.createBitmap(w, h, config);  
-        Canvas canvas = new Canvas(bitmap);  
-        drawable.setBounds(0, 0, w, h);  
-        drawable.draw(canvas);  
-        return bitmap;  
-    } 
     
     /**
      * Query MAIN/LAUNCHER activities by package name.
@@ -211,18 +194,5 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         
         final List<ResolveInfo> apps = mPackageManager.queryIntentActivities(mainIntent, 0);
         return apps == null ? new ArrayList<ResolveInfo>() : apps;
-    }
-    
-    private Intent getLaunchIntent(ResolveInfo reInfo){
-        if(reInfo == null){
-            return null;
-        }
-        String packageName = reInfo.activityInfo.packageName;
-        String name = reInfo.activityInfo.name;
-        ComponentName cn = new ComponentName(packageName,name);
-        Intent intent = new Intent();
-        intent.setComponent(cn);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
     }
 }

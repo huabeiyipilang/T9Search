@@ -1,10 +1,20 @@
 package cn.kli.t9search.framework.app;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import se.emilsjolander.sprinkles.Query;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.text.TextUtils;
 import cn.kli.t9search.utils.DbUtils;
+import cn.kli.t9search.utils.Logger;
 
 /**
  * 应用管理
@@ -14,13 +24,17 @@ import cn.kli.t9search.utils.DbUtils;
  * @mail huabeiyipilang@gmail.com
  * @date 2014-6-21 下午4:56:02
  */
-public class AppManager {
+public class AppManager extends Observable{
     private static AppManager sInstance;
     
+    private Logger log = new Logger(AppManager.class);
+    
     private Context mContext;
+    private PackageManager mPackageManager;
     
     private AppManager(Context context){
         mContext = context;
+        mPackageManager = mContext.getPackageManager();
     }
     
     public static AppManager init(Context context){
@@ -58,4 +72,77 @@ public class AppManager {
         List<AppInfo> list = DbUtils.getAllData(AppInfo.class);
         return list != null && list.size() > 0;
     }
+    
+    public void listenAppListChanged(Observer observer){
+        this.addObserver(observer);
+    }
+    
+    public void unlistenAppListChanged(Observer observer){
+        this.deleteObserver(observer);
+    }
+
+    public void onAppInstalled(final String packageName) {
+        new Thread(){
+
+            @Override
+            public void run() {
+                super.run();
+                List<AppInfo> apps = findAppInDbByPkg(packageName);
+                if(apps == null){
+                    apps = new ArrayList<AppInfo>();
+                    List<ResolveInfo> infos = findActivitiesByPackage(packageName);
+                    if(infos == null || infos.size() == 0){
+                        return;
+                    }else{
+                        for(ResolveInfo info : infos){
+                            apps.add(AppInfo.newInstance(info));
+                        }
+                    }
+                }else{
+                    for(AppInfo info : apps){
+                        info.installed = true;
+                    }
+                }
+                DbUtils.saveAll(apps);
+                
+                notifyObservers();
+            }
+            
+        }.start();
+    }
+
+    public void onAppUninstalled(final String packageName) {
+        new Thread(){
+
+            @Override
+            public void run() {
+                super.run();
+                List<AppInfo> infos = findAppInDbByPkg(packageName);
+                log.i("app uninstalled package name:"+packageName+", appinfo:"+ ((infos == null) ? "null" : infos.size()+""));
+                for(AppInfo info : infos){
+                    info.installed = false;
+                }
+                DbUtils.saveAll(infos);
+                notifyObservers();
+            }
+            
+        }.start();
+    }
+    
+    private List<ResolveInfo> findActivitiesByPackage(String pkgName){
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        if(!TextUtils.isEmpty(pkgName)){
+            mainIntent.setPackage(pkgName);
+        }
+        
+        final List<ResolveInfo> apps = mPackageManager.queryIntentActivities(mainIntent, 0);
+        return apps == null ? new ArrayList<ResolveInfo>() : apps;
+    }
+    
+    private List<AppInfo> findAppInDbByPkg(String packageName){
+        String sql = "select * from app_info where package_name = \""+packageName+"\"";
+        return DbUtils.getDataList(AppInfo.class, sql, "");
+    }
+    
 }

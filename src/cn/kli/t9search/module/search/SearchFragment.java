@@ -2,6 +2,8 @@ package cn.kli.t9search.module.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
@@ -28,7 +30,7 @@ import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
 import cn.kli.t9search.utils.BlurUtils;
 
-public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener {
+public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener, Observer {
     private GridView mGridView;
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
@@ -80,6 +82,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                     
                 }
             });
+            mAppManager.addObserver(this);
         }else{
             loadApp();
         }
@@ -215,6 +218,13 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         if(mLoadTask != null && !mLoadTask.isCancelled()){
             mLoadTask.cancel(true);
         }
+    }
+
+    @Override
+    public void update(Observable arg0, Object arg1) {
+        mKeyboardView.clearInput();
+        mAllAppList = AppManager.getInstance().getAllApps();
+        updateList(mAllAppList);
     }
     
     
