@@ -147,7 +147,7 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
             mDialog.dismiss();
         }
         
-        AppManager.getInstance().notifyObservers();
+        AppManager.getInstance().notifyAppChanged();
     }
     
     

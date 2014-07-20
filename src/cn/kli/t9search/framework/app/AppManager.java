@@ -24,13 +24,19 @@ import cn.kli.t9search.utils.Logger;
  * @mail huabeiyipilang@gmail.com
  * @date 2014-6-21 下午4:56:02
  */
-public class AppManager extends Observable{
+public class AppManager{
     private static AppManager sInstance;
     
     private Logger log = new Logger(AppManager.class);
     
     private Context mContext;
     private PackageManager mPackageManager;
+    
+    private List<OnAppChangedListener> mListener = new ArrayList<OnAppChangedListener>();
+    
+    public interface OnAppChangedListener{
+        void onAppChanged();
+    }
     
     private AppManager(Context context){
         mContext = context;
@@ -73,12 +79,12 @@ public class AppManager extends Observable{
         return list != null && list.size() > 0;
     }
     
-    public void listenAppListChanged(Observer observer){
-        this.addObserver(observer);
+    public void listenAppListChanged(OnAppChangedListener observer){
+        mListener.add(observer);
     }
     
-    public void unlistenAppListChanged(Observer observer){
-        this.deleteObserver(observer);
+    public void unlistenAppListChanged(OnAppChangedListener observer){
+        mListener.remove(observer);
     }
 
     public void onAppInstalled(final String packageName) {
@@ -88,7 +94,7 @@ public class AppManager extends Observable{
             public void run() {
                 super.run();
                 List<AppInfo> apps = findAppInDbByPkg(packageName);
-                if(apps == null){
+                if(apps == null || apps.size() == 0){
                     apps = new ArrayList<AppInfo>();
                     List<ResolveInfo> infos = findActivitiesByPackage(packageName);
                     if(infos == null || infos.size() == 0){
@@ -105,7 +111,7 @@ public class AppManager extends Observable{
                 }
                 DbUtils.saveAll(apps);
                 
-                notifyObservers();
+                notifyAppChanged();
             }
             
         }.start();
@@ -123,10 +129,20 @@ public class AppManager extends Observable{
                     info.installed = false;
                 }
                 DbUtils.saveAll(infos);
-                notifyObservers();
+                notifyAppChanged();
             }
             
         }.start();
+    }
+    
+    void notifyAppChanged(){
+        for(OnAppChangedListener listener : mListener){
+            try {
+                listener.onAppChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     private List<ResolveInfo> findActivitiesByPackage(String pkgName){

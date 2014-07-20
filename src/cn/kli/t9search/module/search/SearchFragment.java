@@ -25,12 +25,14 @@ import cn.kli.t9search.framework.app.AppInfo;
 import cn.kli.t9search.framework.app.AppManager;
 import cn.kli.t9search.framework.app.IAppLoadListener;
 import cn.kli.t9search.framework.app.LoadTask;
+import cn.kli.t9search.framework.app.AppManager.OnAppChangedListener;
 import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
 import cn.kli.t9search.utils.BlurUtils;
 
-public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener, Observer {
+public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
+            OnAppChangedListener {
     private GridView mGridView;
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
@@ -65,8 +67,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             mAdapter = new ItemAdapter();
             mAdapter.setView(SearchItemView.class);
             mGridView.setAdapter(mAdapter);
-            mAllAppList = AppManager.getInstance().getAllApps();
-            updateList(mAllAppList);
             mGridView.setOnItemClickListener(this);
             mGridView.setOnScrollListener(new OnScrollListener() {
                 
@@ -82,10 +82,27 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                     
                 }
             });
-            mAppManager.addObserver(this);
         }else{
             loadApp();
         }
+    }
+    
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAppManager.listenAppListChanged(this);
+        new Thread(){
+
+            @Override
+            public void run() {
+                super.run();
+                if (mAppManager.isInited()) {
+                    mAllAppList = AppManager.getInstance().getAllApps();
+                    updateList(mAllAppList);
+                }
+            }
+            
+        }.start();
     }
 
     private void loadApp(){
@@ -215,10 +232,11 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             mLoadTask.cancel(true);
         }
         mKeyboardView.clearInput();
+        mAppManager.unlistenAppListChanged(this);
     }
 
     @Override
-    public void update(Observable arg0, Object arg1) {
+    public void onAppChanged() {
         mKeyboardView.clearInput();
         mAllAppList = AppManager.getInstance().getAllApps();
         updateList(mAllAppList);
