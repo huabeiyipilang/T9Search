@@ -144,7 +144,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
         }.start();
     }
-
+    
     @Override
     public void onDigitsChanged(String digits) {
         List<AppInfo> list = null;
@@ -198,7 +198,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             }.start();
             Umeng.onEventOpenApp(fromOpenButton, info);
         }
-        mKeyboardView.clearInput();
     }
 
     @Override
@@ -215,6 +214,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         if(mLoadTask != null && !mLoadTask.isCancelled()){
             mLoadTask.cancel(true);
         }
+        mKeyboardView.clearInput();
     }
 
     @Override
