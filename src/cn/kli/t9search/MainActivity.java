@@ -2,13 +2,13 @@ package cn.kli.t9search;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import cn.kli.t9search.analytics.Umeng;
+import cn.kli.t9search.framework.base.BaseActivity;
 import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.module.search.SearchFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +28,6 @@ public class MainActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
         Umeng.onActivityPause();
-    }
-
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
     }
 
     protected void setContentFragment(Class<? extends BaseFragment> fragmentClass, Bundle arguments) {

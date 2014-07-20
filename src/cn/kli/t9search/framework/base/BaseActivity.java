@@ -1,5 +1,8 @@
 package cn.kli.t9search.framework.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -33,5 +36,28 @@ public class BaseActivity extends ActionBarActivity {
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.content_frame, fragment);
         t.commit();
+    }
+    
+    
+    
+    @Override
+    public void onBackPressed() {
+        for(BaseFragment fragment : getAvailableFragment()){
+            if(fragment.onBackKeyDown()){
+                return;
+            }
+        }
+        super.onBackPressed();
+    }
+
+    private List<BaseFragment> getAvailableFragment(){
+        List<BaseFragment> res = new ArrayList<BaseFragment>();
+        List<Fragment> list = getSupportFragmentManager().getFragments();
+        for(Fragment fragment : list){
+            if(fragment instanceof BaseFragment && fragment.isVisible()){
+                res.add((BaseFragment)fragment);
+            }
+        }
+        return res;
     }
 }

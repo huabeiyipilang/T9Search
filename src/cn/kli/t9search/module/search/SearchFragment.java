@@ -29,6 +29,7 @@ import cn.kli.t9search.framework.app.AppManager.OnAppChangedListener;
 import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
+import cn.kli.t9search.module.settings.SettingsManager;
 import cn.kli.t9search.utils.BlurUtils;
 
 public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
@@ -162,6 +163,22 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         }.start();
     }
     
+    
+    
+    @Override
+    protected boolean onBackKeyDown() {
+        if(mKeyboardView.isKeyboardShow()){
+            mKeyboardView.showKeyboard(false);
+        }else{
+            hide();
+        }
+        return true;
+    }
+    
+    private void hide(){
+        getActivity().moveTaskToBack(true);
+    }
+
     @Override
     public void onDigitsChanged(String digits) {
         List<AppInfo> list = null;
@@ -200,6 +217,9 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     private void startApp(boolean fromOpenButton, AppInfo info){
         if(info != null){
+            if(SettingsManager.getHideAfterOpenApp()){
+                hide();
+            }
             startActivity(info.getIntent());
             info.count++;
             info.saveAsync();

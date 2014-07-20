@@ -20,4 +20,13 @@ public class SettingsManager {
     public static boolean getSoundFeedback(){
         return PrefUtils.getBoolean("feedback_sound", true);
     }
+    
+    
+    public static void setHideAfterOpenApp(boolean enable){
+        PrefUtils.setBoolean("hide_after_open_app", enable);
+    }
+    
+    public static boolean getHideAfterOpenApp(){
+        return PrefUtils.getBoolean("hide_after_open_app", true);
+    }
 }

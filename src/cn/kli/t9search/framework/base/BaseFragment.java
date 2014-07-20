@@ -34,6 +34,16 @@ abstract public class BaseFragment extends Fragment {
         Umeng.onFragmentPause(this);
     }
 
+    /**
+     * 接收返回键按下事件
+     * @Title: onBackKeyDown
+     * @return boolean  false:back键事件未处理，向下传递。  true：消费掉该事件。
+     * @date 2014-3-10 上午11:15:33
+     */
+    protected boolean onBackKeyDown(){
+        return false;
+    }
+    
     abstract public int getLayoutRes();
     
     abstract public void initViews(View root);

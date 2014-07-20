@@ -129,6 +129,10 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mShowKeyboardView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
     
+    public boolean isKeyboardShow(){
+        return mKeyboardView.getVisibility() == View.VISIBLE;
+    }
+    
     private class DigitsController{
         String lastDigits = "";
         StringBuilder sb = new StringBuilder();

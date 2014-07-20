@@ -16,6 +16,7 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
     private SettingItemView mVibrateView;
     private SettingItemView mSoundView;
     private SettingItemView mFeedbackView;
+    private SettingItemView mHideView;
 
     @Override
     public int getLayoutRes() {
@@ -38,6 +39,10 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
         
         mFeedbackView = (SettingItemView)root.findViewById(R.id.siv_feedback);
         mFeedbackView.setOnSettingClickListener(this);
+        
+        mHideView = (SettingItemView)root.findViewById(R.id.siv_hide_after_open_app);
+        mHideView.setSwitchChecked(SettingsManager.getHideAfterOpenApp());
+        mHideView.setOnCheckChangeListener(this);
     }
 
     @Override
@@ -66,6 +71,9 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
             break;
         case R.id.siv_fb_sound:
             SettingsManager.setSoundFeedback(checked);
+            break;
+        case R.id.siv_hide_after_open_app:
+            SettingsManager.setHideAfterOpenApp(checked);
             break;
         }
     }

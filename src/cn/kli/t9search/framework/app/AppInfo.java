@@ -112,7 +112,6 @@ public class AppInfo extends Model {
     }
     
     public Intent getIntent(){
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
     
