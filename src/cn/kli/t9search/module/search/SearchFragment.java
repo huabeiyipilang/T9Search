@@ -150,9 +150,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         List<AppInfo> list = null;
         if(TextUtils.isEmpty(digits)){
             list = mAllAppList;
-        }else if("15110176045".equals(digits)){
-            loadApp();
-            return;
         }else{
             list = new ArrayList<AppInfo>();
             for(AppInfo info : mAllAppList){

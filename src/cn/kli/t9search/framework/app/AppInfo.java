@@ -76,9 +76,10 @@ public class AppInfo extends Model {
         String packageName = reInfo.activityInfo.packageName;
         String name = reInfo.activityInfo.name;
         ComponentName cn = new ComponentName(packageName,name);
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(cn);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         return intent;
     }
 
