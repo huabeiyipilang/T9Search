@@ -25,6 +25,7 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
 
     @Override
     public void initViews(View root) {
+        
         mRebuildView = (SettingItemView)root.findViewById(R.id.siv_rebuild_index);
         mRebuildView.setOnSettingClickListener(this);
         

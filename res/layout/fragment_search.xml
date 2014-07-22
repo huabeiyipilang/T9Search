@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:baiduadsdk="http://schemas.android.com/apk/res/cn.kli.t9search"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -16,12 +17,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <com.baidu.mobads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            baiduadsdk:adId=""
+            baiduadsdk:adSize="0" />
+
         <GridView
             android:id="@+id/gv_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:numColumns="3"
+            android:numColumns="4"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scrollbarStyle="outsideOverlay"
             android:verticalSpacing="@dimen/search_list_v_divider" >
         </GridView>
 

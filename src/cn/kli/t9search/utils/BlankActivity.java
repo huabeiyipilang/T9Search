@@ -34,8 +34,9 @@ public class BlankActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_blank);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Class<? extends BaseFragment> fragmentClass = (Class<? extends BaseFragment>)getIntent().getSerializableExtra(INTENT_FRAGMENT_NAME);
         if (fragmentClass != null) {
             setContentFragment(fragmentClass, getIntent().getExtras());

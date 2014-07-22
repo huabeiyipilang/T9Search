@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.baidu.mobads.AdView;
+
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,6 +40,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
     private View mSearchViews;
+    private AdView mAdView;
 
     private List<AppInfo> mAllAppList;
     private ItemAdapter mAdapter;
@@ -57,6 +60,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         mGridView = (GridView)root.findViewById(R.id.gv_list);
         mKeyboardView = (KeyboardView)root.findViewById(R.id.kbv_keyboard);
         mBkgView = (ImageView)root.findViewById(R.id.iv_bg);
+        mAdView = (AdView)root.findViewById(R.id.adView);
 
         mKeyboardView.setOnDigitsChangedListener(this);
 //        initBackgroud();
@@ -92,6 +96,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onStart() {
         super.onStart();
         mAppManager.listenAppListChanged(this);
+        mKeyboardView.showKeyboard(true);
         new Thread(){
 
             @Override
@@ -217,10 +222,10 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     private void startApp(boolean fromOpenButton, AppInfo info){
         if(info != null){
+            startActivity(info.getIntent());
             if(SettingsManager.getHideAfterOpenApp()){
                 hide();
             }
-            startActivity(info.getIntent());
             info.count++;
             info.saveAsync();
             new Thread(){
