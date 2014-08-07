@@ -13,14 +13,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Umeng.init();
         setContentView(R.layout.activity_main);
-        setContentFragment(SearchFragment.class, null);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Umeng.init();
+        setContentFragment(SearchFragment.class, null);
         Umeng.onActivityResume();
     }
     

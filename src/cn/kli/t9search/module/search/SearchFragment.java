@@ -2,18 +2,17 @@ package cn.kli.t9search.module.search;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-
-import com.baidu.mobads.AdView;
 
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -25,14 +24,17 @@ import cn.kli.t9search.R;
 import cn.kli.t9search.analytics.Umeng;
 import cn.kli.t9search.framework.app.AppInfo;
 import cn.kli.t9search.framework.app.AppManager;
+import cn.kli.t9search.framework.app.AppManager.OnAppChangedListener;
 import cn.kli.t9search.framework.app.IAppLoadListener;
 import cn.kli.t9search.framework.app.LoadTask;
-import cn.kli.t9search.framework.app.AppManager.OnAppChangedListener;
 import cn.kli.t9search.framework.base.BaseFragment;
 import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
 import cn.kli.t9search.module.settings.SettingsManager;
 import cn.kli.t9search.utils.BlurUtils;
+import cn.kli.t9search.utils.NetUtils;
+
+import com.baidu.mobads.AdView;
 
 public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
             OnAppChangedListener {
@@ -41,16 +43,21 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     private ImageView mBkgView;
     private View mSearchViews;
     private AdView mAdView;
+    private ViewStub mAdViewStub;
 
     private List<AppInfo> mAllAppList;
     private ItemAdapter mAdapter;
     
     private LoadTask mLoadTask;
+    private cn.kli.t9search.utils.NetUtils mNetUtils;
 
     private AppManager mAppManager = AppManager.getInstance();
+    
+    private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public int getLayoutRes() {
+//        Debug.startMethodTracing("SearchFragment");
         return R.layout.fragment_search;
     }
 
@@ -60,7 +67,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         mGridView = (GridView)root.findViewById(R.id.gv_list);
         mKeyboardView = (KeyboardView)root.findViewById(R.id.kbv_keyboard);
         mBkgView = (ImageView)root.findViewById(R.id.iv_bg);
-        mAdView = (AdView)root.findViewById(R.id.adView);
+        mAdViewStub = (ViewStub)root.findViewById(R.id.vs_baidu_ads);
 
         mKeyboardView.setOnDigitsChangedListener(this);
 //        initBackgroud();
@@ -109,6 +116,24 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             }
             
         }.start();
+//        Debug.stopMethodTracing();
+        mMainHandler.postDelayed(new Runnable() {
+            
+            @Override
+            public void run() {
+                if(mNetUtils == null){
+                    mNetUtils = new NetUtils(getActivity());
+                }
+                if(mNetUtils.isNetworkConnected()){
+                    try {
+                        mAdViewStub.inflate();
+                        mAdView = (AdView)getActivity().findViewById(R.id.adView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, 3000);
     }
 
     private void loadApp(){
@@ -121,6 +146,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
             @Override
             public void onFinished() {
+                mAppManager.setInited(true);
                 initDatas();
             }
             

@@ -2,8 +2,6 @@ package cn.kli.t9search.framework.app;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import se.emilsjolander.sprinkles.Query;
 
@@ -15,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.text.TextUtils;
 import cn.kli.t9search.utils.DbUtils;
 import cn.kli.t9search.utils.Logger;
+import cn.kli.t9search.utils.PrefUtils;
 
 /**
  * 应用管理
@@ -26,6 +25,8 @@ import cn.kli.t9search.utils.Logger;
  */
 public class AppManager{
     private static AppManager sInstance;
+    
+    private static final String PREF_INITED = "app_manager_inited";
     
     private Logger log = new Logger(AppManager.class);
     
@@ -75,8 +76,11 @@ public class AppManager{
     }
     
     public boolean isInited(){
-        List<AppInfo> list = DbUtils.getAllData(AppInfo.class);
-        return list != null && list.size() > 0;
+        return PrefUtils.getBoolean(PREF_INITED, false);
+    }
+    
+    public void setInited(boolean inited){
+        PrefUtils.setBoolean(PREF_INITED, inited);
     }
     
     public void listenAppListChanged(OnAppChangedListener observer){
