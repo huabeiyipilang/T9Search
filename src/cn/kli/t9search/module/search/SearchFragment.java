@@ -57,7 +57,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     @Override
     public int getLayoutRes() {
-//        Debug.startMethodTracing("SearchFragment");
         return R.layout.fragment_search;
     }
 
@@ -104,6 +103,9 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         super.onStart();
         mAppManager.listenAppListChanged(this);
         mKeyboardView.showKeyboard(true);
+        if(mAllAppList == null){
+            
+        }
         new Thread(){
 
             @Override
@@ -111,12 +113,11 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 super.run();
                 if (mAppManager.isInited()) {
                     mAllAppList = AppManager.getInstance().getAllApps();
-                    updateList(mAllAppList);
+                    updateList();
                 }
             }
             
         }.start();
-//        Debug.stopMethodTracing();
         mMainHandler.postDelayed(new Runnable() {
             
             @Override
@@ -163,32 +164,26 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 Drawable wallpaperDrawable = wallpaperManager.getDrawable();
                 Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
                 final Bitmap bm1 = Bitmap.createScaledBitmap(bm, bm.getWidth()/2, bm.getHeight()/2, true);
-                try {
-                    getActivity().runOnUiThread(new Runnable(){
+                mMainHandler.post(new Runnable(){
 
-                        @Override
-                        public void run() {
-                            mBkgView.setImageBitmap(bm1);
-                        }
+                    @Override
+                    public void run() {
+                        mBkgView.setImageBitmap(bm1);
+                    }
 
-                    });
-                } catch (Exception e) {
-                }
+                });
                 final Bitmap bm2 = BlurUtils.blurFilter(bm1);
                 final TransitionDrawable transition = new TransitionDrawable(new Drawable[]{
                         mBkgView.getDrawable(), new BitmapDrawable(App.getContext().getResources(), bm2)});
-                try {
-                    getActivity().runOnUiThread(new Runnable(){
+                mMainHandler.post(new Runnable(){
 
-                        @Override
-                        public void run() {
-                            mBkgView.setImageDrawable(transition);
-                            transition.startTransition(1000);
-                        }
+                    @Override
+                    public void run() {
+                        mBkgView.setImageDrawable(transition);
+                        transition.startTransition(1000);
+                    }
 
-                    });
-                } catch (Exception e) {
-                }
+                });
             }
 
         }.start();
@@ -212,14 +207,24 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     @Override
     public void onDigitsChanged(String digits) {
+        filterList(digits);
+    }
+    
+    private void updateList(){
+        filterList(mKeyboardView.getDigits());
+    }
+    
+    private void filterList(String keyword){
         List<AppInfo> list = null;
-        if(TextUtils.isEmpty(digits)){
+        if(TextUtils.isEmpty(keyword)){
             list = mAllAppList;
         }else{
             list = new ArrayList<AppInfo>();
-            for(AppInfo info : mAllAppList){
-                if(!TextUtils.isEmpty(info.keyword_quanpin_t9) && info.keyword_quanpin_t9.contains(digits)){
-                    list.add(info);
+            if(mAllAppList != null){
+                for(AppInfo info : mAllAppList){
+                    if(!TextUtils.isEmpty(info.keyword_quanpin_t9) && info.keyword_quanpin_t9.contains(keyword)){
+                        list.add(info);
+                    }
                 }
             }
         }
@@ -228,7 +233,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     private void updateList(List<AppInfo> list){
         mAdapter.setData(list);
-        getActivity().runOnUiThread(new Runnable(){
+        mMainHandler.post(new Runnable(){
 
             @Override
             public void run() {
@@ -260,7 +265,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 public void run() {
                     super.run();
                     mAllAppList = AppManager.getInstance().getAllApps();
-                    updateList(mAllAppList);
+                    updateList();
                 }
                 
             }.start();
@@ -290,7 +295,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onAppChanged() {
         mKeyboardView.clearInput();
         mAllAppList = AppManager.getInstance().getAllApps();
-        updateList(mAllAppList);
+        updateList();
     }
     
     

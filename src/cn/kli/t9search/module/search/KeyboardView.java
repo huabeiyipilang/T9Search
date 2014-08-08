@@ -124,6 +124,10 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mDigitsView.setText(digits);
     }
     
+    public String getDigits(){
+        return mDigitsView.getText().toString();
+    }
+    
     public void showKeyboard(boolean show){
         mKeyboardView.setVisibility(show ? View.VISIBLE : View.GONE);
         mShowKeyboardView.setVisibility(show ? View.GONE : View.VISIBLE);
