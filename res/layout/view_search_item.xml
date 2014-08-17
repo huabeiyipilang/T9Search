@@ -2,29 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:gravity="center_horizontal" >
+    android:paddingRight="5dp" >
 
-    <ImageView
-        android:id="@+id/iv_icon"
-        android:layout_width="@dimen/search_item_icon_size"
-        android:layout_height="@dimen/search_item_icon_size"
-        android:src="@drawable/ic_launcher" />
+    <FrameLayout
+        android:layout_width="@dimen/search_item_icon_frame_size"
+        android:layout_height="@dimen/search_item_icon_frame_size" >
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/search_item_icon_size"
+            android:layout_height="@dimen/search_item_icon_size"
+            android:src="@drawable/ic_launcher"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/iv_del_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:src="@drawable/icon_app_delete" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:lines="2"
         android:gravity="center_horizontal"
+        android:lines="2"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/tv_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="TextView" />
+        android:text="TextView"
+        android:visibility="gone" />
+
 </LinearLayout>

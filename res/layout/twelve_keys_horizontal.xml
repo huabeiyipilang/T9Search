@@ -140,15 +140,18 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal" >
-
-            <ImageButton
+            
+            <Button
+                android:id="@+id/bt_uninstall"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/dial_num_bg"
                 android:scaleType="centerInside"
                 android:soundEffectsEnabled="false"
-                android:src="@drawable/dialpad" />
+                android:text="卸载"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textColor="@android:color/darker_gray" />
 
             <ImageButton
                 android:id="@+id/seven"

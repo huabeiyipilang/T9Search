@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -193,7 +195,10 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     
     @Override
     protected boolean onBackKeyDown() {
-        if(mKeyboardView.isKeyboardShow()){
+        if(SearchItemView.sDelMode){
+            mKeyboardView.exitDelMode();
+            mAdapter.notifyDataSetChanged();
+        }else if(mKeyboardView.isKeyboardShow()){
             mKeyboardView.showKeyboard(false);
         }else{
             hide();
@@ -277,7 +282,14 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
         Object o = mAdapter.getItem(position);
         if(o != null && o instanceof AppInfo){
-            startApp(false, (AppInfo)o);
+            AppInfo app =  (AppInfo)o;
+            if(SearchItemView.sDelMode){
+                Uri uri = Uri.fromParts("package", app.packageName, null);
+                Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+                startActivity(intent);
+            }else{
+                startApp(false, app);
+            }
         }
     }
 
@@ -297,6 +309,10 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         mAllAppList = AppManager.getInstance().getAllApps();
         updateList();
     }
-    
+
+    @Override
+    public void onListTypeChanged() {
+        mAdapter.notifyDataSetChanged();
+    }
     
 }

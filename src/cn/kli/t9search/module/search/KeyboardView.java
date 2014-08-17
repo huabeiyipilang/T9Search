@@ -24,6 +24,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     private ImageButton mHideView;
     private TextView mDigitsView;
     private Button mLockScreenView;
+    private Button mUninstallView;
     
     private T9KeyboardListener mListener;
     private DigitsController mDigitsController = new DigitsController();
@@ -31,12 +32,24 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     public interface T9KeyboardListener{
         void onDigitsChanged(String digits);
         void onOpenFirstClick();
+        void onListTypeChanged();
     }
 
     public KeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.keyboard_layout, this);
         initViews();
+    }
+    
+    public void exitDelMode(){
+        if(SearchItemView.sDelMode){
+            SearchItemView.sDelMode = false;
+            updateUi();
+        }
+    }
+    
+    private void updateUi(){
+        mUninstallView.setText(SearchItemView.sDelMode ? "取消" : "卸载");
     }
 
 
@@ -61,6 +74,12 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         case R.id.bt_lock_screen:
             LockScreenUtils.getInstance(getContext()).lockScreen();
             break;
+        case R.id.bt_uninstall:
+            SearchItemView.sDelMode = !SearchItemView.sDelMode;
+            updateUi();
+            if(mListener != null){
+                mListener.onListTypeChanged();
+            }
         }
     }
     
@@ -84,6 +103,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mHideView = (ImageButton)findViewById(R.id.hide);
         mDigitsView = (TextView)findViewById(R.id.input);
         mLockScreenView = (Button)findViewById(R.id.bt_lock_screen);
+        mUninstallView = (Button)findViewById(R.id.bt_uninstall);
         
         int[] keyids = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
                 R.id.nine, R.id.zero};
@@ -104,6 +124,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mHideView.setOnClickListener(this);
         mShowKeyboardView.setOnClickListener(this);
         mLockScreenView.setOnClickListener(this);
+        mUninstallView.setOnClickListener(this);
         mDelView.setOnLongClickListener(new OnLongClickListener() {
             
             @Override
