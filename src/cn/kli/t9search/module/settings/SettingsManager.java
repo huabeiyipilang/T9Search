@@ -27,6 +27,6 @@ public class SettingsManager {
     }
     
     public static boolean getHideAfterOpenApp(){
-        return PrefUtils.getBoolean("hide_after_open_app", true);
+        return PrefUtils.getBoolean("hide_after_open_app", false);
     }
 }

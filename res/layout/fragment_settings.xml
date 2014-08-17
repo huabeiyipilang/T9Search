@@ -37,7 +37,8 @@
             android:id="@+id/siv_hide_after_open_app"
             style="@style/SettingItem"
             my:titleText="打开应用后隐藏抽屉"
-            my:settingType="type_check" />
+            my:settingType="type_check"
+            android:visibility="gone" />
         
         <cn.kli.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_feedback"

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import cn.kli.libs.lockscreen.LockScreenUtils;
 import cn.kli.t9search.R;
 import cn.kli.t9search.module.settings.SettingsFragment;
 import cn.kli.t9search.module.settings.SettingsManager;
@@ -22,6 +23,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     private Button mOkView;
     private ImageButton mHideView;
     private TextView mDigitsView;
+    private Button mLockScreenView;
     
     private T9KeyboardListener mListener;
     private DigitsController mDigitsController = new DigitsController();
@@ -56,7 +58,9 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         case R.id.hide:
             showKeyboard(false);
             break;
-         
+        case R.id.bt_lock_screen:
+            LockScreenUtils.getInstance(getContext()).lockScreen();
+            break;
         }
     }
     
@@ -79,6 +83,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mOkView = (Button)findViewById(R.id.ok);
         mHideView = (ImageButton)findViewById(R.id.hide);
         mDigitsView = (TextView)findViewById(R.id.input);
+        mLockScreenView = (Button)findViewById(R.id.bt_lock_screen);
         
         int[] keyids = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
                 R.id.nine, R.id.zero};
@@ -98,6 +103,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         mOkView.setOnClickListener(this);
         mHideView.setOnClickListener(this);
         mShowKeyboardView.setOnClickListener(this);
+        mLockScreenView.setOnClickListener(this);
         mDelView.setOnLongClickListener(new OnLongClickListener() {
             
             @Override

@@ -123,7 +123,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             @Override
             public void run() {
                 if(mNetUtils == null){
-                    mNetUtils = new NetUtils(getActivity());
+                    mNetUtils = new NetUtils(App.getContext());
                 }
                 if(mNetUtils.isNetworkConnected()){
                     try {
