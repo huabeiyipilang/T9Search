@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import cn.kli.t9search.App;
 import cn.kli.t9search.R;
 import cn.kli.t9search.analytics.Umeng;
@@ -233,7 +234,12 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
 
     private void startApp(boolean fromOpenButton, AppInfo info){
         if(info != null){
-            startActivity(info.getIntent());
+            try {
+                startActivity(info.getIntent());
+            } catch (Exception e) {
+                Toast.makeText(getActivity(), "应用不存在，请到设置中，重建索引", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if(SettingsManager.getHideAfterOpenApp()){
                 hide();
             }
