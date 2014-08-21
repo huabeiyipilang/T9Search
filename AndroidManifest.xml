@@ -28,12 +28,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Channel ID" />
-        <meta-data
-            android:name="BaiduMobAd_APP_ID"
-            android:value="debug" />
-        <meta-data
-            android:name="BaiduMobAd_APP_SEC"
-            android:value="debug" />
 
         <activity
             android:name="cn.kli.t9search.MainActivity"

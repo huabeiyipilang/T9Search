@@ -39,7 +39,7 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int arg0) {
-        return mDatas.get(arg0);
+        return mDatas == null || mDatas.size() == 0 ? null : mDatas.get(arg0);
     }
 
     @Override

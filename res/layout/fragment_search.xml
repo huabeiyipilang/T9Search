@@ -16,12 +16,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <ViewStub
-            android:id="@+id/vs_baidu_ads"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout="@layout/baidu_ads_view" />
-
         <GridView
             android:id="@+id/gv_list"
             android:layout_width="match_parent"

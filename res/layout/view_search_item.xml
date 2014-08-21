@@ -15,8 +15,8 @@
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/search_item_icon_size"
             android:layout_height="@dimen/search_item_icon_size"
-            android:src="@drawable/ic_launcher"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:src="@drawable/ic_launcher" />
 
         <ImageView
             android:id="@+id/iv_del_icon"
@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
             android:src="@drawable/icon_app_delete" />
-
     </FrameLayout>
 
     <TextView
@@ -33,7 +32,13 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:lines="2"
-        android:text="TextView" />
+        android:shadowColor="#ff000000"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_test"

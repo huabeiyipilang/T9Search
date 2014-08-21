@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -34,9 +33,6 @@ import cn.kli.t9search.framework.base.ItemAdapter;
 import cn.kli.t9search.module.search.KeyboardView.T9KeyboardListener;
 import cn.kli.t9search.module.settings.SettingsManager;
 import cn.kli.t9search.utils.BlurUtils;
-import cn.kli.t9search.utils.NetUtils;
-
-import com.baidu.mobads.AdView;
 
 public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
             OnAppChangedListener {
@@ -44,8 +40,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
     private View mSearchViews;
-    private AdView mAdView;
-    private ViewStub mAdViewStub;
 
     private List<AppInfo> mAllAppList;
     private ItemAdapter mAdapter;
@@ -68,10 +62,8 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         mGridView = (GridView)root.findViewById(R.id.gv_list);
         mKeyboardView = (KeyboardView)root.findViewById(R.id.kbv_keyboard);
         mBkgView = (ImageView)root.findViewById(R.id.iv_bg);
-        mAdViewStub = (ViewStub)root.findViewById(R.id.vs_baidu_ads);
-
         mKeyboardView.setOnDigitsChangedListener(this);
-//        initBackgroud();
+        initBackgroud();
     }
 
     @Override
@@ -106,37 +98,20 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         mAppManager.listenAppListChanged(this);
         mKeyboardView.showKeyboard(true);
         if(mAllAppList == null){
-            
-        }
-        new Thread(){
-
-            @Override
-            public void run() {
-                super.run();
-                if (mAppManager.isInited()) {
-                    mAllAppList = AppManager.getInstance().getAllApps();
-                    updateList();
-                }
-            }
-            
-        }.start();
-        mMainHandler.postDelayed(new Runnable() {
-            
-            @Override
-            public void run() {
-                if(mNetUtils == null){
-                    mNetUtils = new NetUtils(App.getContext());
-                }
-                if(mNetUtils.isNetworkConnected()){
-                    try {
-                        mAdViewStub.inflate();
-                        mAdView = (AdView)getActivity().findViewById(R.id.adView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            new Thread(){
+                
+                @Override
+                public void run() {
+                    super.run();
+                    if (mAppManager.isInited()) {
+                        mAllAppList = AppManager.getInstance().getAllApps();
+                        updateList();
                     }
                 }
-            }
-        }, 3000);
+                
+            }.start();
+        }
+            
     }
 
     private void loadApp(){
@@ -165,7 +140,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(getActivity());
                 Drawable wallpaperDrawable = wallpaperManager.getDrawable();
                 Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-                final Bitmap bm1 = Bitmap.createScaledBitmap(bm, bm.getWidth()/2, bm.getHeight()/2, true);
+                final Bitmap bm1 = Bitmap.createScaledBitmap(bm, bm.getWidth()/4, bm.getHeight()/4, true);
                 mMainHandler.post(new Runnable(){
 
                     @Override
