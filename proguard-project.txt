@@ -18,3 +18,10 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-dontskipnonpubliclibraryclassmembers
+
+-libraryjars ./libs/pinyin4j-2.5.0.jar
+-libraryjars ./libs/umeng-analytics-v5.2.3.jar
+-libraryjars ./libs/umeng-fb-v4.3.2.jar
+-libraryjars ./libs/umeng-update-v2.4.2.jar
