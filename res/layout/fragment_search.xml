@@ -28,7 +28,7 @@
             android:verticalSpacing="@dimen/search_list_v_divider" >
         </GridView>
 
-        <cn.kli.t9search.module.search.KeyboardView
+        <com.carl.t9search.module.search.KeyboardView
             android:id="@+id/kbv_keyboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
