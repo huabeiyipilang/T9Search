@@ -210,7 +210,10 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 }
             }
         }
-        updateList(list);
+        try {
+            updateList(list);
+        } catch (Exception e) {
+        }
     }
 
     private void updateList(List<AppInfo> list){
