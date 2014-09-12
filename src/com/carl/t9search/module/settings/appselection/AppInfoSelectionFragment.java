@@ -41,6 +41,7 @@ public class AppInfoSelectionFragment extends BaseFragment implements OnItemClic
     @Override
     public void initDatas() {
         List<AppInfo> infos = AppManager.getInstance().getAllApps();
+        infos.add(0, null);
         mAdapter = new ItemAdapter(infos, AppInfoSelectionItemView.class);
         mListView.setAdapter(mAdapter);
     }

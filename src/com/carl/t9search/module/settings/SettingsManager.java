@@ -35,7 +35,7 @@ public class SettingsManager {
     }
     
     public static void setQuickDial(int index, Intent intent){
-        PrefUtils.setString("quick_dial_"+index, intent.toUri(0));
+        PrefUtils.setString("quick_dial_"+index, intent == null ? null : intent.toUri(0));
     }
     
     public static AppInfo getQuickDial(int index){
