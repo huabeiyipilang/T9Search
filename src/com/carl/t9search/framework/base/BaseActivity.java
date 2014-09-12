@@ -22,13 +22,13 @@ public class BaseActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Umeng.onActivityResume();
+        Umeng.onActivityResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Umeng.onActivityPause();
+        Umeng.onActivityPause(this);
     }
 
     protected void setContentFragment(Class<? extends BaseFragment> fragmentClass, Bundle arguments) {

@@ -1,5 +1,9 @@
 package com.carl.t9search.module.settings;
 
+import se.emilsjolander.sprinkles.Query;
+import android.content.Intent;
+
+import com.carl.t9search.framework.app.AppInfo;
 import com.carl.t9search.utils.PrefUtils;
 
 public class SettingsManager {
@@ -28,5 +32,15 @@ public class SettingsManager {
     
     public static boolean getHideAfterOpenApp(){
         return PrefUtils.getBoolean("hide_after_open_app", false);
+    }
+    
+    public static void setQuickDial(int index, Intent intent){
+        PrefUtils.setString("quick_dial_"+index, intent.toUri(0));
+    }
+    
+    public static AppInfo getQuickDial(int index){
+        String intent = PrefUtils.getString("quick_dial_"+index, null);
+        AppInfo info = Query.one(AppInfo.class, String.format("select * from app_info where intent=\"%s\"", intent)).get();
+        return info;
     }
 }

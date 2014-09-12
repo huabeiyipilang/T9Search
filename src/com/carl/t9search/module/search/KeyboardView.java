@@ -35,6 +35,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         void onDigitsChanged(String digits);
         void onOpenFirstClick();
         void onListTypeChanged();
+        void onKeyLongClick(String key);
     }
 
     public KeyboardView(Context context, AttributeSet attrs) {
@@ -110,15 +111,32 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
         int[] keyids = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
                 R.id.nine, R.id.zero};
         
-        for(int id : keyids){
-            findViewById(id).setOnClickListener(new View.OnClickListener() {
-                
-                @Override
-                public void onClick(View view) {
-                    onKeyClickFeedback();
-                    mDigitsController.push(String.valueOf(view.getTag()));
+        
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View view) {
+                onKeyClickFeedback();
+                mDigitsController.push(String.valueOf(view.getTag()));
+            }
+        };
+        
+        View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+            
+            @Override
+            public boolean onLongClick(View view) {
+                if(mListener != null){
+                    mListener.onKeyLongClick(String.valueOf(view.getTag()));
+                    return true;
                 }
-            });
+                return false;
+            }
+        };
+        
+        for(int id : keyids){
+            View keyButton = findViewById(id);
+            keyButton.setOnClickListener(onClickListener);
+            keyButton.setOnLongClickListener(onLongClickListener);
         }
         
         mDelView.setOnClickListener(this);

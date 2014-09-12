@@ -15,6 +15,7 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
     private SettingItemView mRebuildView;
     private SettingItemView mVibrateView;
     private SettingItemView mSoundView;
+    private SettingItemView mQuickView;
     private SettingItemView mFeedbackView;
     private SettingItemView mHideView;
 
@@ -44,6 +45,9 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
         mHideView = (SettingItemView)root.findViewById(R.id.siv_hide_after_open_app);
         mHideView.setSwitchChecked(SettingsManager.getHideAfterOpenApp());
         mHideView.setOnCheckChangeListener(this);
+        
+        mQuickView = (SettingItemView)root.findViewById(R.id.siv_quick_dial);
+        mQuickView.setOnSettingClickListener(this);
     }
 
     @Override
@@ -60,6 +64,9 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
         case R.id.siv_feedback:
             FeedbackAgent agent = new FeedbackAgent(getActivity());
             agent.startFeedbackActivity();
+            break;
+        case R.id.siv_quick_dial:
+            openFragment(this, QuickDialFragment.class, null);
             break;
         }
     }

@@ -112,6 +112,10 @@ public class SettingItemView extends LinearLayout {
         }
     }
     
+    public void setSubTitle(String text){
+        mSubTitleView.setText(text);
+    }
+    
     public void setOnCheckChangeListener(OnSettingItemCheckListener listener){
         mOnCheckListener = listener;
     }

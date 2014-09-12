@@ -20,7 +20,7 @@ public class ItemAdapter extends BaseAdapter {
         
     }
     
-    public ItemAdapter(List<Object> list, Class<? extends BaseItemView> viewClass){
+    public ItemAdapter(List<? extends Object> list, Class<? extends BaseItemView> viewClass){
         mDatas = list;
         mViewClass = viewClass;
     }

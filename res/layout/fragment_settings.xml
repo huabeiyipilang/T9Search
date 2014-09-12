@@ -34,6 +34,13 @@
             my:settingType="type_check" />
         
         <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_dial"
+            style="@style/SettingItem"
+            my:titleText="快捷键设置"
+            my:subTitleText="设置长按数字键打开应用"
+            my:settingType="type_click" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_hide_after_open_app"
             style="@style/SettingItem"
             my:titleText="打开应用后隐藏抽屉"

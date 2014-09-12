@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res/com.carl.t9search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            style="@style/SettingTitleItem"
+            my:titleText="长按下列按键，快速打开应用"
+            my:settingType="type_title" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_1"
+            style="@style/SettingItem"
+            my:titleText="1"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="1" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_2"
+            style="@style/SettingItem"
+            my:titleText="2"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="2" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_3"
+            style="@style/SettingItem"
+            my:titleText="3"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="3" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_4"
+            style="@style/SettingItem"
+            my:titleText="4"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="4" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_5"
+            style="@style/SettingItem"
+            my:titleText="5"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="5" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_6"
+            style="@style/SettingItem"
+            my:titleText="6"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="6" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_7"
+            style="@style/SettingItem"
+            my:titleText="7"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="7" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_8"
+            style="@style/SettingItem"
+            my:titleText="8"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="8" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_quick_9"
+            style="@style/SettingItem"
+            my:titleText="9"
+            my:subTitleText="未设置"
+            my:settingType="type_click"
+            android:tag="9" />
+    </LinearLayout>
+
+</ScrollView>

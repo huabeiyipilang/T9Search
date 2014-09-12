@@ -35,6 +35,7 @@ import com.carl.t9search.framework.base.ItemAdapter;
 import com.carl.t9search.module.search.KeyboardView.T9KeyboardListener;
 import com.carl.t9search.module.settings.SettingsManager;
 import com.carl.t9search.utils.BlurUtils;
+import com.carl.t9search.utils.ToastUtils;
 
 public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
             OnAppChangedListener {
@@ -232,11 +233,11 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onOpenFirstClick() {
         Object o = mAdapter.getItem(0);
         if(o != null && o instanceof AppInfo){
-            startApp(true, (AppInfo)o);
+            startApp(Umeng.OPEN_APP_BY_OPEN_BUTTON, (AppInfo)o);
         }
     }
 
-    private void startApp(boolean fromOpenButton, AppInfo info){
+    private void startApp(int from, AppInfo info){
         if(info != null){
             try {
                 startActivity(info.getIntent());
@@ -259,7 +260,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 }
                 
             }.start();
-            Umeng.onEventOpenApp(fromOpenButton, info);
+            Umeng.onEventOpenApp(from, info);
         }
     }
 
@@ -273,7 +274,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 Intent intent = new Intent(Intent.ACTION_DELETE, uri);
                 startActivity(intent);
             }else{
-                startApp(false, app);
+                startApp(Umeng.OPEN_APP_BY_CLICK_ICON, app);
             }
         }
     }
@@ -298,6 +299,16 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     @Override
     public void onListTypeChanged() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onKeyLongClick(String key) {
+        AppInfo info = SettingsManager.getQuickDial(Integer.parseInt(key));
+        if(info == null){
+            ToastUtils.showToast(getActivity(), "按键\""+key+"\"未设置快捷键");
+        }else{
+            startApp(Umeng.OPEN_APP_BY_QUICK_DIAL, info);
+        }
     }
     
 }
