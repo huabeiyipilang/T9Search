@@ -2,9 +2,6 @@ package com.carl.t9search.framework.app;
 
 import java.util.List;
 
-import com.carl.t9search.App;
-import com.carl.t9search.R;
-
 import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.annotations.AutoIncrementPrimaryKey;
 import se.emilsjolander.sprinkles.annotations.Column;
@@ -18,10 +15,17 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+
+import com.carl.t9search.App;
+import com.carl.t9search.R;
+import com.carl.t9search.utils.Logger;
 import com.carl.t9search.utils.PinYinUtils;
 
 @Table("app_info")
 public class AppInfo extends Model {
+    
+    Logger log = new Logger(AppInfo.class);
+    
     @AutoIncrementPrimaryKey
     @Column("id")
     public long id;
@@ -98,7 +102,7 @@ public class AppInfo extends Model {
     } 
 
     public boolean equals(AppInfo appInfo) {
-        return intent!= null && intent.equals(intent) 
+        return intent!= null && intent.toUri(0).equals(appInfo.intent.toUri(0))
                 && !TextUtils.isEmpty(packageName) && packageName.equals(appInfo.packageName);
     }
     

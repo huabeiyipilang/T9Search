@@ -3,28 +3,20 @@ package com.carl.t9search.framework.app;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.carl.t9search.App;
-import com.carl.t9search.R;
-
-import se.emilsjolander.sprinkles.SqlStatement;
 import se.emilsjolander.sprinkles.Transaction;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+
+import com.carl.t9search.App;
 import com.carl.t9search.framework.app.IAppLoadListener.Result;
 import com.carl.t9search.framework.app.LoadTask.Progress;
 import com.carl.t9search.utils.DbUtils;
 import com.carl.t9search.utils.Logger;
-import com.carl.t9search.utils.PinYinUtils;
 
 public class LoadTask extends AsyncTask<Void, Progress, Result> {
     
@@ -66,7 +58,6 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
             mDialog.setMessage("开始创建索引");
             mDialog.show();
         }
-        mAppInDb = DbUtils.getAllData(AppInfo.class);
     }
 
     @Override
@@ -83,6 +74,7 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         progress.info = "加载应用";
         publishProgress(progress);
 
+        mAppInDb = DbUtils.getAllData(AppInfo.class);
         List<ResolveInfo> resolveInfos = findActivitiesByPackage(null);
         for(AppInfo info : mAppInDb){
             info.installed = false;
@@ -98,12 +90,14 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
         
         for(int i = 0; i < size; i++){
             ResolveInfo info = resolveInfos.get(i);
+            //过滤本应用
             if(info.activityInfo.packageName.equals(App.getContext().getPackageName())){
                 continue;
             }
             AppInfo item = AppInfo.newInstance(info);
             
             AppInfo app = findAppInfoFromDb(item);
+            
             if(app != null){
                 app.merge(item);
             }else{
@@ -114,6 +108,7 @@ public class LoadTask extends AsyncTask<Void, Progress, Result> {
             publishProgress(progress);
         }
         mAppInDb.addAll(newApps);
+        log.i("newApps size:"+newApps.size());
 
         //step3  64%
         progress.info = "保存数据";

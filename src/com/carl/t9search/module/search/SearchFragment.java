@@ -261,6 +261,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 
             }.start();
             Umeng.onEventOpenApp(from, info);
+            Umeng.openAppBySearch(TextUtils.isEmpty(mKeyboardView.getDigits()));
         }
     }
 

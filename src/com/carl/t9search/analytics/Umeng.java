@@ -61,4 +61,8 @@ public class Umeng {
         map.put("package_name", info.packageName);
         MobclickAgent.onEvent(sContext, "open_app", map);  
     }
+    
+    public static void openAppBySearch(boolean bySearch){
+        MobclickAgent.onEvent(sContext, "open_app_by_search", bySearch+"");  
+    }
 }
