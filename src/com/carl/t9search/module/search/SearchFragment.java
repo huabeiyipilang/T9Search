@@ -34,11 +34,12 @@ import com.carl.t9search.framework.base.BaseFragment;
 import com.carl.t9search.framework.base.ItemAdapter;
 import com.carl.t9search.module.search.KeyboardView.T9KeyboardListener;
 import com.carl.t9search.module.settings.SettingsManager;
+import com.carl.t9search.module.settings.SettingsManager.QuickDialListener;
 import com.carl.t9search.utils.BlurUtils;
 import com.carl.t9search.utils.ToastUtils;
 
 public class SearchFragment extends BaseFragment implements T9KeyboardListener, OnItemClickListener,
-            OnAppChangedListener {
+            OnAppChangedListener, QuickDialListener {
     private GridView mGridView;
     private KeyboardView mKeyboardView;
     private ImageView mBkgView;
@@ -93,6 +94,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         }else{
             loadApp();
         }
+        SettingsManager.registerQuickDialListener(this);
     }
     
     @Override
@@ -316,5 +318,12 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onDestroy() {
         super.onDestroy();
         SettingsManager.registerQuickDialListener(null);
+    }
+
+    @Override
+    public void onQuickDialChanged(int index) {
+        if(mKeyboardView != null){
+            mKeyboardView.freshQuickDialUI(index);
+        }
     }
 }
