@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my="http://schemas.android.com/apk/res/com.carl.t9search"
     android:id="@+id/twelve_keys"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,49 +38,39 @@
             android:layout_weight="1"
             android:orientation="horizontal" >
             
-            <Button
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/ib_setting"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:text="设置"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@android:color/darker_gray" />
+                my:mainText="设置" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView 
                 android:id="@+id/one"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
                 android:soundEffectsEnabled="false"
                 android:src="@drawable/dial_num_1_wht" 
-                android:tag="1"/>
+                my:mainText="1"
+                android:tag="1" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/two"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_2_wht"
+                my:mainText="2"
+                my:subText="ABC"
                 android:tag="2" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/three"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_3_wht"
+                my:mainText="3"
+                my:subText="DEF"
                 android:tag="3" />
         </LinearLayout>
 
@@ -89,49 +80,38 @@
             android:layout_weight="1"
             android:orientation="horizontal" >
             
-            <Button
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/bt_lock_screen"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:text="锁屏"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@android:color/darker_gray" />
+                my:mainText="锁屏" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/four"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_4_wht"
+                my:mainText="4"
+                my:subText="GHI"
                 android:tag="4" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/five"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_5_wht"
+                my:mainText="5"
+                my:subText="JKL"
                 android:tag="5" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/six"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_6_wht"
+                my:mainText="6"
+                my:subText="MNO"
                 android:tag="6" />
         </LinearLayout>
 
@@ -141,49 +121,38 @@
             android:layout_weight="1"
             android:orientation="horizontal" >
             
-            <Button
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/bt_uninstall"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:text="卸载"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@android:color/darker_gray" />
+                my:mainText="卸载" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/seven"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_7_wht"
+                my:mainText="7"
+                my:subText="PQRS"
                 android:tag="7" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/eight"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_8_wht"
+                my:mainText="8"
+                my:subText="TUV"
                 android:tag="8" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/nine"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_9_wht"
+                my:mainText="9"
+                my:subText="WXYZ"
                 android:tag="9" />
         </LinearLayout>
         
@@ -193,48 +162,34 @@
             android:layout_weight="1"
             android:orientation="horizontal" >
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/hide"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dialpad" />
+                my:buttonIcon="@drawable/dialpad" />
 
-            <Button
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/ok"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:text="OPEN"
-                android:textAppearance="@android:style/TextAppearance.Medium"
-                android:textColor="@android:color/darker_gray" />
+                my:mainText="OPEN"/>
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/zero"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_0_wht"
+                my:mainText="0"
                 android:tag="0" />
 
-            <ImageButton
+            <com.carl.t9search.module.search.KeyboardButtonView
                 android:id="@+id/del"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/dial_num_bg"
-                android:scaleType="centerInside"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_del_normal" />
+                my:buttonIcon="@drawable/dial_num_del_normal" />
 
         </LinearLayout>
         

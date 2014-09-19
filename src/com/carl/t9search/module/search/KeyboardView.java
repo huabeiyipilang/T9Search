@@ -1,10 +1,7 @@
 package com.carl.t9search.module.search;
 
-import cn.kli.libs.lockscreen.LockScreenUtils;
-
-import com.carl.t9search.R;
-
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +9,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import cn.kli.libs.lockscreen.LockScreenUtils;
+
+import com.carl.t9search.R;
+import com.carl.t9search.framework.app.AppInfo;
 import com.carl.t9search.module.settings.SettingsFragment;
 import com.carl.t9search.module.settings.SettingsManager;
 import com.carl.t9search.utils.BlankActivity;
@@ -19,14 +20,17 @@ import com.carl.t9search.utils.VibrateUtils;
 
 public class KeyboardView extends LinearLayout implements OnClickListener {
     
+    private static final int[] keyids = {R.id.zero, R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
+            R.id.nine};
+    
     private ImageButton mShowKeyboardView;
     private View mKeyboardView;
-    private ImageButton mDelView;
-    private Button mOkView;
-    private ImageButton mHideView;
+    private View mDelView;
+    private View mOkView;
+    private View mHideView;
     private TextView mDigitsView;
-    private Button mLockScreenView;
-    private Button mUninstallView;
+    private View mLockScreenView;
+    private KeyboardButtonView mUninstallView;
     
     private T9KeyboardListener mListener;
     private DigitsController mDigitsController = new DigitsController();
@@ -52,7 +56,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     }
     
     private void updateUi(){
-        mUninstallView.setText(SearchItemView.sDelMode ? "取消" : "卸载");
+        mUninstallView.setTitle(SearchItemView.sDelMode ? "取消" : "卸载");
     }
 
 
@@ -101,16 +105,14 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     private void initViews(){
         mShowKeyboardView = (ImageButton)findViewById(R.id.btn_keyboard_show);
         mKeyboardView = findViewById(R.id.ll_keyboard);
-        mDelView = (ImageButton)findViewById(R.id.del);
-        mOkView = (Button)findViewById(R.id.ok);
-        mHideView = (ImageButton)findViewById(R.id.hide);
+        mDelView = findViewById(R.id.del);
+        mOkView = findViewById(R.id.ok);
+        mHideView = findViewById(R.id.hide);
         mDigitsView = (TextView)findViewById(R.id.input);
-        mLockScreenView = (Button)findViewById(R.id.bt_lock_screen);
-        mUninstallView = (Button)findViewById(R.id.bt_uninstall);
+        mLockScreenView = findViewById(R.id.bt_lock_screen);
+        mUninstallView = (KeyboardButtonView)findViewById(R.id.bt_uninstall);
         
-        int[] keyids = {R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
-                R.id.nine, R.id.zero};
-        
+        freshQuickDialUI(-1);
         
         View.OnClickListener onClickListener = new View.OnClickListener() {
             
@@ -161,6 +163,26 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
                 BlankActivity.startFragmentActivity(getContext(), SettingsFragment.class, null);
             }
         });
+    }
+    
+    public void freshQuickDialUI(int index){
+        if(index < 0){
+            for(int i = 1; i <= 9; i++){
+                AppInfo info = SettingsManager.getQuickDial(i);
+                if(info != null){
+                    Bitmap icon = info.icon;
+                    Bitmap bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
+                    ((KeyboardButtonView)findViewById(keyids[i])).setBg(bg);
+                }
+            }
+        }else{
+            AppInfo info = SettingsManager.getQuickDial(index);
+            if(info != null){
+                Bitmap icon = info.icon;
+                Bitmap bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
+                ((KeyboardButtonView)findViewById(keyids[index])).setBg(bg);
+            }
+        }
     }
     
     public void setOnDigitsChangedListener(T9KeyboardListener listener){

@@ -66,7 +66,7 @@ public class QuickDialFragment extends BaseFragment implements OnAppInfoSelected
 
     @Override
     public void onAppInfoSelected(AppInfo info) {
-        SettingsManager.setQuickDial((Integer) mCurrentView.getTag(R.id.tag_index), info.intent);
+        SettingsManager.setQuickDial((Integer) mCurrentView.getTag(R.id.tag_index), info == null ? null : info.intent);
         mCurrentView.setTag(R.id.tag_appinfo, info);
         updateUI();
     }

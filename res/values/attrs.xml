@@ -15,6 +15,12 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="KeyboardButtonView">
+        <attr name="mainText" format="string" />
+        <attr name="subText" format="string" />
+        <attr name="buttonIcon" format="reference" />
+    </declare-styleable>
+    
     <item name="tag_index" type="id"></item>
     <item name="tag_appinfo" type="id"></item>
 

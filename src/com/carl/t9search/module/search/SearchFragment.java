@@ -312,4 +312,9 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         }
     }
     
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SettingsManager.registerQuickDialListener(null);
+    }
 }

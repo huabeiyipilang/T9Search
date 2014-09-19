@@ -34,8 +34,23 @@ public class SettingsManager {
         return PrefUtils.getBoolean("hide_after_open_app", false);
     }
     
+    //QuickDial
+    
+    private static QuickDialListener mQuickDialListener;
+    
+    public static void registerQuickDialListener(QuickDialListener listener){
+        mQuickDialListener = listener;
+    }
+    
+    public static interface QuickDialListener{
+        void onQuickDialChanged(int index);
+    }
+    
     public static void setQuickDial(int index, Intent intent){
         PrefUtils.setString("quick_dial_"+index, intent == null ? null : intent.toUri(0));
+        if(mQuickDialListener != null){
+            mQuickDialListener.onQuickDialChanged(index);
+        }
     }
     
     public static AppInfo getQuickDial(int index){
