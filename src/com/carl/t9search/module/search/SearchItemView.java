@@ -30,6 +30,9 @@ public class SearchItemView extends BaseItemView {
     @SuppressLint("NewApi")
     @Override
     public void bindData(Object data) {
+        if(data == null){
+            return;
+        }
         AppInfo info = (AppInfo)data;
         mIconView.setImageBitmap(info.icon);
         mTitleView.setText(info.title);
