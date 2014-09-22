@@ -23,7 +23,7 @@ public class AppInfoSelectionItemView extends BaseItemView {
     @Override
     public void bindData(Object data) {
         if (data == null) {
-            mIconView.setVisibility(View.GONE);
+            mIconView.setImageResource(R.drawable.ic_cancel);
             mTitleView.setText("取消快捷方式");
         } else {
             AppInfo info = (AppInfo) data;

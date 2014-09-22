@@ -50,8 +50,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:soundEffectsEnabled="false"
-                android:src="@drawable/dial_num_1_wht" 
                 my:mainText="1"
                 android:tag="1" />
 
