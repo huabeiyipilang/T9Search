@@ -5,7 +5,7 @@ import java.util.List;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.carl.t9search.R;
 import com.carl.t9search.framework.app.AppInfo;
@@ -15,7 +15,7 @@ import com.carl.t9search.framework.base.ItemAdapter;
 
 public class AppInfoSelectionFragment extends BaseFragment implements OnItemClickListener {
 
-    private ListView mListView;
+    private GridView mListView;
     private ItemAdapter mAdapter;
     private static OnAppInfoSelectedListener mListener;
     
@@ -34,7 +34,7 @@ public class AppInfoSelectionFragment extends BaseFragment implements OnItemClic
 
     @Override
     public void initViews(View root) {
-        mListView = (ListView)root.findViewById(R.id.lv_app_list);
+        mListView = (GridView)root.findViewById(R.id.lv_app_list);
         mListView.setOnItemClickListener(this);
     }
 

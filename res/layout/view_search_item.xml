@@ -23,7 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
-            android:src="@drawable/icon_app_delete" />
+            android:src="@drawable/icon_app_delete"
+            android:visibility="gone" />
     </FrameLayout>
 
     <TextView

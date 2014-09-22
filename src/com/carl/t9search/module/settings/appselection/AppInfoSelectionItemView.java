@@ -15,7 +15,7 @@ public class AppInfoSelectionItemView extends BaseItemView {
     private TextView mTitleView;
 
     public AppInfoSelectionItemView(Context context) {
-        super(context, R.layout.view_appinfo_selection_item);
+        super(context, R.layout.view_search_item);
         mIconView = (ImageView) findViewById(R.id.iv_icon);
         mTitleView = (TextView) findViewById(R.id.tv_title);
     }

@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
+    <GridView
         android:id="@+id/lv_app_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="4"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:verticalSpacing="@dimen/search_list_v_divider" >
+    </GridView>
 
 </LinearLayout>

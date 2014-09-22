@@ -24,7 +24,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     private static final int[] keyids = {R.id.zero, R.id.one, R.id.two, R.id.three, R.id.four, R.id.five, R.id.six, R.id.seven, R.id.eight,
             R.id.nine};
     
-    private ImageButton mShowKeyboardView;
+    private KeyboardButtonView mShowKeyboardView;
     private View mKeyboardView;
     private View mDelView;
     private View mOkView;
@@ -104,7 +104,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
     }
     
     private void initViews(){
-        mShowKeyboardView = (ImageButton)findViewById(R.id.btn_keyboard_show);
+        mShowKeyboardView = (KeyboardButtonView)findViewById(R.id.btn_keyboard_show);
         mKeyboardView = findViewById(R.id.ll_keyboard);
         mDelView = findViewById(R.id.del);
         mOkView = findViewById(R.id.ok);
@@ -178,11 +178,12 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
             }
         }else{
             AppInfo info = SettingsManager.getQuickDial(index);
+            Bitmap bg = null;
             if(info != null){
                 Bitmap icon = info.icon;
-                Bitmap bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
-                ((KeyboardButtonView)findViewById(keyids[index])).setBg(bg);
+                bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
             }
+            ((KeyboardButtonView)findViewById(keyids[index])).setBg(bg);
         }
     }
     
