@@ -1,6 +1,8 @@
 package com.carl.t9search.framework.app;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import se.emilsjolander.sprinkles.Model;
 import se.emilsjolander.sprinkles.annotations.AutoIncrementPrimaryKey;
@@ -9,12 +11,15 @@ import se.emilsjolander.sprinkles.annotations.Table;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import com.carl.t9search.App;
 import com.carl.t9search.R;
@@ -33,8 +38,12 @@ public class AppInfo extends Model {
     @Column("title")
     public String title;
     
+    /**
+     * 废弃
+     */
     @Column("icon")
-    public Bitmap icon;
+    @Deprecated
+    Bitmap icon;
     
     @Column("package_name")
     public String packageName;
@@ -60,14 +69,16 @@ public class AppInfo extends Model {
     
     @Column("installed")
     public boolean installed = true;
-    
+
+    private static final Executor sExecutor = Executors.newFixedThreadPool(5);
+    private static final PackageManager pkgManager = App.getContext().getPackageManager();
     
     public static AppInfo newInstance(ResolveInfo info){
         PackageManager pkgManager = App.getContext().getPackageManager();
         AppInfo app = new AppInfo();
         app.packageName = info.activityInfo.packageName;
         app.title = info.loadLabel(pkgManager).toString();
-        app.icon = drawableToBitmap(info.loadIcon(pkgManager));
+//        app.icon = drawableToBitmap(info.loadIcon(pkgManager));
         app.intent = getLaunchIntent(info);
         app.packageName = info.activityInfo.packageName;
         app.setQuanpin(PinYinUtils.string2PinYin(app.title));
@@ -100,6 +111,16 @@ public class AppInfo extends Model {
         drawable.draw(canvas);  
         return bitmap;  
     } 
+    
+    public Bitmap getIcon(){
+        try {
+            Drawable d = pkgManager.getActivityIcon(intent);
+            return drawableToBitmap(d);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public boolean equals(AppInfo appInfo) {
         return intent!= null && intent.toUri(0).equals(appInfo.intent.toUri(0))
@@ -125,11 +146,38 @@ public class AppInfo extends Model {
             return;
         }
         title = appInfo.title;
-        icon = appInfo.icon;
         keyword_quanpin = appInfo.keyword_quanpin;
         keyword_shouzimu = appInfo.keyword_shouzimu;
         keyword_quanpin_t9 = appInfo.keyword_quanpin_t9;
         keyword_shouzimu_t9 = appInfo.keyword_shouzimu_t9;
         installed = appInfo.installed;
+    }
+    
+    public void loadIcon(ImageView imgView){
+        new LoadImgTask().executeOnExecutor(sExecutor, imgView);
+    }
+
+    
+    private class LoadImgTask extends AsyncTask<ImageView, Object, Drawable>{
+        ImageView imageView;
+        @Override
+        protected Drawable doInBackground(ImageView... params) {
+            imageView = params[0];
+            try {
+                Drawable d = pkgManager.getActivityIcon(intent);
+                return d;
+            } catch (NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Drawable result) {
+            super.onPostExecute(result);
+            imageView.setImageDrawable(result);
+        }
+        
+        
     }
 }

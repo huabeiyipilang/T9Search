@@ -171,7 +171,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
             for(int i = 1; i <= 9; i++){
                 AppInfo info = SettingsManager.getQuickDial(i);
                 if(info != null){
-                    Bitmap icon = info.icon;
+                    Bitmap icon = info.getIcon();
                     Bitmap bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
                     ((KeyboardButtonView)findViewById(keyids[i])).setBg(bg);
                 }
@@ -180,7 +180,7 @@ public class KeyboardView extends LinearLayout implements OnClickListener {
             AppInfo info = SettingsManager.getQuickDial(index);
             Bitmap bg = null;
             if(info != null){
-                Bitmap icon = info.icon;
+                Bitmap icon = info.getIcon();
                 bg = Bitmap.createBitmap(icon, icon.getWidth()/10, (int)icon.getHeight()/10, (int)icon.getWidth()*4/5, (int)icon.getHeight()*4/5, null, true);
             }
             ((KeyboardButtonView)findViewById(keyids[index])).setBg(bg);

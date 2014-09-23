@@ -28,7 +28,7 @@ public class AppInfoSelectionItemView extends BaseItemView {
         } else {
             AppInfo info = (AppInfo) data;
             mIconView.setVisibility(View.VISIBLE);
-            mIconView.setImageBitmap(info.icon);
+            info.loadIcon(mIconView);
             mTitleView.setText(info.title);
         }
     }

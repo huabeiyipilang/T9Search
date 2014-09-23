@@ -34,7 +34,7 @@ public class SearchItemView extends BaseItemView {
             return;
         }
         AppInfo info = (AppInfo)data;
-        mIconView.setImageBitmap(info.icon);
+        info.loadIcon(mIconView);
         mTitleView.setText(info.title);
         mTestView.setText(info.keyword_quanpin_t9);
         mDelView.setVisibility(sDelMode ? View.VISIBLE : View.GONE);
