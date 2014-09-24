@@ -94,13 +94,13 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
         }else{
             loadApp();
         }
+        mAppManager.listenAppListChanged(this);
         SettingsManager.registerQuickDialListener(this);
     }
     
     @Override
     public void onStart() {
         super.onStart();
-        mAppManager.listenAppListChanged(this);
         mKeyboardView.showKeyboard(true);
         if(mAllAppList == null){
             new Thread(){
@@ -156,7 +156,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
                 });
                 final Bitmap bm2 = BlurUtils.blurFilter(bm1);
                 final TransitionDrawable transition = new TransitionDrawable(new Drawable[]{
-                        mBkgView.getDrawable(), new BitmapDrawable(App.getContext().getResources(), bm2)});
+                        new BitmapDrawable(App.getContext().getResources(), bm1), new BitmapDrawable(App.getContext().getResources(), bm2)});
                 mMainHandler.post(new Runnable(){
 
                     @Override
@@ -289,7 +289,6 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             mLoadTask.cancel(true);
         }
         mKeyboardView.clearInput();
-        mAppManager.unlistenAppListChanged(this);
     }
 
     @Override
@@ -317,6 +316,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mAppManager.unlistenAppListChanged(this);
         SettingsManager.registerQuickDialListener(null);
     }
 
