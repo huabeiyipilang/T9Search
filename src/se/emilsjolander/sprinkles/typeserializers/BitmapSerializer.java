@@ -36,6 +36,9 @@ public class BitmapSerializer implements TypeSerializer<Bitmap> {
     }
     
     private static byte[] flattenBitmap(Bitmap bitmap){
+        if(bitmap == null){
+            return null;
+        }
         int size = bitmap.getWidth() * bitmap.getHeight() * 4;
         ByteArrayOutputStream out = new ByteArrayOutputStream(size);
         try {

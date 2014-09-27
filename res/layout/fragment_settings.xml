@@ -13,6 +13,11 @@
         android:orientation="vertical" >
         
         <com.carl.t9search.framework.widget.SettingItemView
+            style="@style/SettingTitleItem"
+            my:titleText="常用设置"
+            my:settingType="type_title" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_rebuild_index"
             style="@style/SettingItem"
             my:titleText="重建索引"
@@ -31,7 +36,8 @@
             style="@style/SettingItem"
             my:titleText="声音反馈"
             my:subTitleText="触摸T9键盘时声音反馈"
-            my:settingType="type_check" />
+            my:settingType="type_check"
+            android:visibility="gone" />
         
         <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_quick_dial"
@@ -48,10 +54,43 @@
             android:visibility="gone" />
         
         <com.carl.t9search.framework.widget.SettingItemView
+            style="@style/SettingTitleItem"
+            android:layout_marginTop="20dp"
+            my:titleText="同步"
+            my:settingType="type_title" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_backup"
+            style="@style/SettingItem"
+            my:titleText="备份数据"
+            my:subTitleText="将本地数据备份到网络"
+            my:settingType="type_click" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_update"
+            style="@style/SettingItem"
+            my:titleText="恢复数据"
+            my:subTitleText="将最后一次备份的数据合并的本地"
+            my:settingType="type_click" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            style="@style/SettingTitleItem"
+            android:layout_marginTop="20dp"
+            my:titleText="关于"
+            my:settingType="type_title" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_feedback"
             style="@style/SettingItem"
             my:titleText="用户反馈"
             my:subTitleText="反馈问题、吐槽意见、指点建议"
+            my:settingType="type_click" />
+        
+        <com.carl.t9search.framework.widget.SettingItemView
+            android:id="@+id/siv_about"
+            style="@style/SettingItem"
+            my:titleText="关于"
+            my:subTitleText="关于本应用"
             my:settingType="type_click" />
     </LinearLayout>
 
