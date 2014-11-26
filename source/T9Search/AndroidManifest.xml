@@ -33,7 +33,7 @@
             android:name="com.carl.t9search.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar.Translucent.NoTitleBar" >
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
