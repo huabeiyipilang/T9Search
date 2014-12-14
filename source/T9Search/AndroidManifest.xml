@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.carl.t9search"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="3"
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -15,6 +15,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:name="com.carl.t9search.App"
@@ -58,11 +62,6 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        
-		<activity android:name="com.baidu.mobads.AppActivity" 
-		    android:configChanges="keyboard|keyboardHidden|orientation" />
-		
-		
         <receiver
             android:name="cn.kli.libs.lockscreen.DeviceReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN" >
@@ -74,6 +73,20 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <!-- 下载服务 -->
+        <service android:name="com.alimama.mobile.sdk.shell.DownloadingService" >
+            <intent-filter>
+                <action android:name="com.alimama.mobile.sdk.download.action" />
+            </intent-filter>
+        </service>
+
+        <!-- 应用详情页 -->
+        <activity
+            android:name="com.alimama.mobile.sdk.shell.AlimamaDetail"
+            android:configChanges="keyboard|orientation"
+            android:launchMode="standard"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

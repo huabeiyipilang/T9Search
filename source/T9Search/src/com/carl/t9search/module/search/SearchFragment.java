@@ -3,10 +3,11 @@ package com.carl.t9search.module.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.carl.t9search.App;
-import com.carl.t9search.R;
-
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.WallpaperManager;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,6 +25,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.carl.t9search.App;
+import com.carl.t9search.R;
 import com.carl.t9search.analytics.Umeng;
 import com.carl.t9search.framework.app.AppInfo;
 import com.carl.t9search.framework.app.AppManager;
@@ -33,8 +37,10 @@ import com.carl.t9search.framework.app.LoadTask;
 import com.carl.t9search.framework.base.BaseFragment;
 import com.carl.t9search.framework.base.ItemAdapter;
 import com.carl.t9search.module.search.KeyboardView.T9KeyboardListener;
+import com.carl.t9search.module.settings.QuickDialFragment;
 import com.carl.t9search.module.settings.SettingsManager;
 import com.carl.t9search.module.settings.SettingsManager.QuickDialListener;
+import com.carl.t9search.utils.BlankActivity;
 import com.carl.t9search.utils.BlurUtils;
 import com.carl.t9search.utils.ToastUtils;
 
@@ -50,6 +56,7 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     
     private LoadTask mLoadTask;
     private com.carl.t9search.utils.NetUtils mNetUtils;
+    private Dialog mSetQuickDigitDialog;
 
     private AppManager mAppManager = AppManager.getInstance();
     
@@ -289,6 +296,9 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
             mLoadTask.cancel(true);
         }
         mKeyboardView.clearInput();
+        if(mSetQuickDigitDialog != null){
+        	mSetQuickDigitDialog.dismiss();
+        }
     }
 
     @Override
@@ -307,7 +317,18 @@ public class SearchFragment extends BaseFragment implements T9KeyboardListener, 
     public void onKeyLongClick(String key) {
         AppInfo info = SettingsManager.getQuickDial(Integer.parseInt(key));
         if(info == null){
-            ToastUtils.showToast(getActivity(), "按键\""+key+"\"未设置快捷键");
+            mSetQuickDigitDialog = new AlertDialog.Builder(getActivity())
+            						.setMessage("按键\""+key+"\"未设置快捷键，是否现在设置？")
+            						.setNegativeButton("取消", null)
+            						.setPositiveButton("设置", new OnClickListener(){
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,int which) {
+											BlankActivity.startFragmentActivity(getActivity(), QuickDialFragment.class, null);
+										}
+            							
+            						}).show();
         }else{
             startApp(Umeng.OPEN_APP_BY_QUICK_DIAL, info);
         }

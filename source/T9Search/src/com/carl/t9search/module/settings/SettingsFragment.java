@@ -68,6 +68,8 @@ public class SettingsFragment extends BaseFragment implements OnSettingItemClick
         case R.id.siv_quick_dial:
             openFragment(this, QuickDialFragment.class, null);
             break;
+        case R.id.siv_about:
+        	break;
         }
     }
 

@@ -57,21 +57,24 @@
             style="@style/SettingTitleItem"
             android:layout_marginTop="20dp"
             my:titleText="同步"
-            my:settingType="type_title" />
+            my:settingType="type_title"
+            android:visibility="gone" />
         
         <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_backup"
             style="@style/SettingItem"
             my:titleText="备份数据"
             my:subTitleText="将本地数据备份到网络"
-            my:settingType="type_click" />
+            my:settingType="type_click"
+            android:visibility="gone" />
         
         <com.carl.t9search.framework.widget.SettingItemView
             android:id="@+id/siv_update"
             style="@style/SettingItem"
             my:titleText="恢复数据"
             my:subTitleText="将最后一次备份的数据合并的本地"
-            my:settingType="type_click" />
+            my:settingType="type_click"
+            android:visibility="gone" />
         
         <com.carl.t9search.framework.widget.SettingItemView
             style="@style/SettingTitleItem"
@@ -91,7 +94,8 @@
             style="@style/SettingItem"
             my:titleText="关于"
             my:subTitleText="关于本应用"
-            my:settingType="type_click" />
+            my:settingType="type_click"
+            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>
