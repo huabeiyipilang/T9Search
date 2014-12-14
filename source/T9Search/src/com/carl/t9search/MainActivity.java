@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
     }
     
     private void showInsert(){
-        ViewGroup parent = (ViewGroup) findViewById(R.id.content_frame);
+        ViewGroup parent = (ViewGroup) findViewById(R.id.ad_insert);
         String slotId = "64273";
         InsertProperties properties = new InsertProperties(slotId, parent);
         mInsertController = (InsertController<?>) properties.getMmuController();

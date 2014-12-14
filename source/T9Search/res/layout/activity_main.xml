@@ -13,12 +13,25 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-    </LinearLayout>
+	<FrameLayout
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="1" >
+
+    	<LinearLayout
+        	android:id="@+id/content_frame"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:orientation="vertical" >
+    	</LinearLayout>
+
+    	<LinearLayout
+    	    android:id="@+id/ad_insert"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:orientation="vertical" >
+    	</LinearLayout>
+
+	</FrameLayout>
 
 </LinearLayout>
