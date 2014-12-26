@@ -4,8 +4,6 @@ import se.emilsjolander.sprinkles.Migration;
 import se.emilsjolander.sprinkles.Sprinkles;
 import android.app.Application;
 
-import com.alimama.mobile.sdk.MmuSDK;
-import com.alimama.mobile.sdk.config.MmuSDKFactory;
 import com.carl.t9search.framework.app.AppInfo;
 import com.carl.t9search.framework.app.AppManager;
 

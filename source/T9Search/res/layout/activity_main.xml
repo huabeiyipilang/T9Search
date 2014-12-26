@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:baiduadsdk="http://schemas.android.com/apk/res/com.carl.t9search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,27 +12,33 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical" >
+
+        <com.baidu.mobads.AdView
+            android:id="@+id/adView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            baiduadsdk:adId=""
+            baiduadsdk:adSize="0" />
     </LinearLayout>
 
-	<FrameLayout
-    	android:layout_width="match_parent"
-    	android:layout_height="0dp"
-    	android:layout_weight="1" >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
-    	<LinearLayout
-        	android:id="@+id/content_frame"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-        	android:orientation="vertical" >
-    	</LinearLayout>
+        <LinearLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
 
-    	<LinearLayout
-    	    android:id="@+id/ad_insert"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-        	android:orientation="vertical" >
-    	</LinearLayout>
-
-	</FrameLayout>
+        <LinearLayout
+            android:id="@+id/ad_insert"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

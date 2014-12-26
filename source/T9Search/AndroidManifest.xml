@@ -74,19 +74,12 @@
             </intent-filter>
         </receiver>
 
-        <!-- 下载服务 -->
-        <service android:name="com.alimama.mobile.sdk.shell.DownloadingService" >
-            <intent-filter>
-                <action android:name="com.alimama.mobile.sdk.download.action" />
-            </intent-filter>
-        </service>
-
-        <!-- 应用详情页 -->
-        <activity
-            android:name="com.alimama.mobile.sdk.shell.AlimamaDetail"
-            android:configChanges="keyboard|orientation"
-            android:launchMode="standard"
-            android:screenOrientation="portrait" />
+        <!-- 百度广告 -->
+		<meta-data android:name="BaiduMobAd_APP_ID" android:value="1004b9bb" /> 
+		<meta-data android:name="BaiduMobAd_APP_SEC" android:value="1004b9bb" />
+		<activity android:name="com.baidu.mobads.AppActivity" 
+		    android:configChanges="keyboard|keyboardHidden|orientation" />
+		
     </application>
 
 </manifest>
