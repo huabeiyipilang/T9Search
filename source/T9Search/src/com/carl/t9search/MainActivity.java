@@ -3,7 +3,9 @@ package com.carl.t9search;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
+import com.baidu.mobads.AdView;
 import com.baidu.mobads.InterstitialAd;
 import com.baidu.mobads.InterstitialAdListener;
 import com.carl.t9search.analytics.Umeng;
@@ -16,7 +18,9 @@ import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity {
 
-	InterstitialAd interAd;
+	private AdView bannerAd;
+	private InterstitialAd interAd;
+	private boolean showAd;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,9 @@ public class MainActivity extends BaseActivity {
         Umeng.init();
         setContentView(R.layout.activity_main);
         setContentFragment(SearchFragment.class, null);
+        String show_ad = MobclickAgent.getConfigParams(App.getContext(), "show_ad");
+        showAd = "true".equals(show_ad) ? true : false;
+        setupBannerAd();
         setupInsertAds();
     }
 
@@ -49,8 +56,16 @@ public class MainActivity extends BaseActivity {
         t.replace(R.id.content_frame, fragment);
         t.commit();
     }
+    
+    private void setupBannerAd(){
+    	bannerAd = (AdView)findViewById(R.id.adView);
+    	bannerAd.setVisibility(showAd ? View.VISIBLE : View.GONE);
+    }
 
     private void setupInsertAds(){
+    	if(!showAd){
+    		return;
+    	}
     	interAd=new InterstitialAd(this);
 		interAd.setListener(new InterstitialAdListener(){
 
