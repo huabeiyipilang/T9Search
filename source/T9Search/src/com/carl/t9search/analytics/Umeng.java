@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.support.v4.app.Fragment;
 
 import com.carl.t9search.App;
@@ -64,5 +67,16 @@ public class Umeng {
     
     public static void openAppBySearch(boolean bySearch){
         MobclickAgent.onEvent(sContext, "open_app_by_search", bySearch+"");  
+    }
+    
+    public static String getChannel(){
+		try {
+			ApplicationInfo appInfo = App.getContext().getPackageManager().getApplicationInfo(App.getContext().getPackageName(),
+			PackageManager.GET_META_DATA);
+	    	return appInfo.metaData.getString("UMENG_CHANNEL");
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 }

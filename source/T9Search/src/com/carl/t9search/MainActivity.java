@@ -1,8 +1,11 @@
 package com.carl.t9search;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.baidu.mobads.AdView;
@@ -21,6 +24,7 @@ public class MainActivity extends BaseActivity {
 	private AdView bannerAd;
 	private InterstitialAd interAd;
 	private boolean showAd;
+	private String[] showAdChannelArray;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +32,7 @@ public class MainActivity extends BaseActivity {
         Umeng.init();
         setContentView(R.layout.activity_main);
         setContentFragment(SearchFragment.class, null);
-        String show_ad = MobclickAgent.getConfigParams(App.getContext(), "show_ad");
-        showAd = "true".equals(show_ad) ? true : false;
+        loadConfig();
         setupBannerAd();
         setupInsertAds();
     }
@@ -55,6 +58,30 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.content_frame, fragment);
         t.commit();
+    }
+    
+    private void loadConfig(){
+        String show_ad = MobclickAgent.getConfigParams(App.getContext(), "show_ad");
+        showAd = "true".equals(show_ad) ? true : false;
+        Logger.info("loadConfig, showAd:"+showAd);
+        
+        String channels = MobclickAgent.getConfigParams(App.getContext(), "show_ad_channel_list");
+        if(TextUtils.isEmpty(channels)){
+        	return;
+        }
+        showAdChannelArray = channels.split(",");
+        String appChannel = Umeng.getChannel();
+        if(showAdChannelArray != null && !TextUtils.isEmpty(appChannel)){
+            boolean contains = false;
+        	for(String channel : showAdChannelArray){
+        		contains = appChannel.contains(channel);
+        		if(contains){
+        			break;
+        		}
+        	}
+            Logger.info("loadConfig, contains:"+contains);
+        	showAd = showAd && contains;
+        }
     }
     
     private void setupBannerAd(){
